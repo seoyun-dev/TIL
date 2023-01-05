@@ -1,6 +1,6 @@
 # Today I Learned
 - 매일 공부한 내용을 작성합니다.
-- 공유하고픈 내용은 [블로그](https://happy-tiger-sy.tistory.com/)에도 작성합니다.
+- 공유하고픈 내용은 [블로그](https://velog.io/@tiger)에도 작성합니다.
 
 ## Java
 - [이것이 자바다](https://github.com/seoyun-dev/TIL/tree/main/Java/%EC%9D%B4%EA%B2%83%EC%9D%B4_%EC%9E%90%EB%B0%94%EB%8B%A4)  

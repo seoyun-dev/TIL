@@ -12,6 +12,7 @@
 
 ## MVC와 템플릿 엔진
 MVC: Model, View, Controller - View는 화면 그리기에, Model과 Controller는 내부 처리, 비즈니스 로직에 집중  
+`http://localhost:8080/helllo-mvc?name=spring`  
 
 <img src ="https://images.velog.io/images/sewonkim/post/5a9a1966-73f9-43b5-ae21-2857b90a5144/image.png">
 
@@ -40,8 +41,9 @@ MVC: Model, View, Controller - View는 화면 그리기에, Model과 Controller�
         } 
     }
 }
-
 ```
+`http://localhost:8080/hello-api?name=서윤`  
+  
 <img src ="https://velog.velcdn.com/images/khoony0125/post/6d327242-5cb4-428d-9e7d-e05d4a5df525/image.png">  
 
 - `@GetMapping("hello-api")`를 컨트롤러에서 찾아봐.

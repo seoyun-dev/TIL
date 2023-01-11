@@ -2,6 +2,7 @@
 - 매일 공부한 내용을 작성합니다.
 - 공유하고픈 내용은 [블로그](https://velog.io/@tiger)에도 작성합니다.
 
+---
 ## CS
 - [HTTP](https://github.com/seoyun-dev/TIL/blob/main/CS/HTTP.md)
 

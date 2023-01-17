@@ -15,6 +15,7 @@
 - [변수와 타입](https://github.com/seoyun-dev/TIL/blob/main/Java/md/2.%EB%B3%80%EC%88%98%EC%99%80%20%ED%83%80%EC%9E%85.md)
 - [연산자](https://github.com/seoyun-dev/TIL/blob/main/Java/3.%EC%97%B0%EC%82%B0%EC%9E%90.md)
 - [조건문과 반복문](https://github.com/seoyun-dev/TIL/blob/main/Java/4.%EC%A1%B0%EA%B1%B4%EB%AC%B8%EA%B3%BC_%EB%B0%98%EB%B3%B5%EB%AC%B8.md)
+- [참조 타입](https://github.com/seoyun-dev/TIL/blob/main/Java/5.%EC%B0%B8%EC%A1%B0_%ED%83%80%EC%9E%85.md)
 
 ## Spring
 - [스프링 입문](https://github.com/seoyun-dev/TIL/tree/main/Spring/%EC%8A%A4%ED%94%84%EB%A7%81_%EC%9E%85%EB%AC%B8)

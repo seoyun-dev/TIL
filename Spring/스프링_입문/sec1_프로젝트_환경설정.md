@@ -40,11 +40,16 @@ start.spring.io 는 spring boot를 기반으로 spring 관련 프로젝트를 �
 - .gitignore: 
 - build.gradle: gradle 설정  
 
-## 라이브러리 살펴보기
+## 라이브러리 살펴보기 - 편하게 듣자..! 그냥 들으며 감 잡기
 > Gradle은 의존관계가 있는 라이브러리르 함께 다운한다.  
 
+![](https://user-images.githubusercontent.com/91110192/214021059-a3ecdbcf-cf83-4eb1-9fdf-249250b62986.png)  
+
+위처럼 starter web 라이브러리를 받으면 아래의 의존관계에 있는 모든 라이브러리를 다운받게 된다.
+
+
 **스프링 부트 라이브러리**
-- spring-boot-starter-web 
+- spring-boot-starter-web
   - spring-boot-starter-tomcat: 톰캣 (웹서버) 
   - spring-webmvc: 스프링 웹 MVC
 - spring-boot-starter-thymeleaf: 타임리프 템플릿 엔진(View) 
@@ -57,7 +62,7 @@ start.spring.io 는 spring boot를 기반으로 spring 관련 프로젝트를 �
 **테스트 라이브러리**
 - spring-boot-starter-test
   - junit: 테스트 프레임워크
-  - mockito: 목 라이브러리
+  - mockito: 테스트 코드를 좀 더 편하게 작성하게 도와주는 라이브러리 
   - assertj: 테스트 코드를 좀 더 편하게 작성하게 도와주는 라이브러리 
   - spring-test: 스프링 통합 테스트 지원
 </br>
@@ -71,17 +76,19 @@ spring.io에 접속 -> [project] - [spring boot] - [Reference Doc] 들어가서 
 
 <img src="https://images.velog.io/images/hono2030/post/76309860-e16d-46c7-ade9-0d2790e58abe/image.png">
   
-- 톰캣: hello가 들어왔네? 컨트롤러 중에 mapping("hello") 찾아!
-- 찾았다! return: hello 니까 뷰리졸버로 템플릿 엔진에서 hello.html 찾아.
+- 톰켓서버: hello가 들어왔네? 스프링아, 컨트롤러 중에 mapping("hello") 찾아!
+- 스프링: 찾았다! `@GetMapping("hello")`된 부분 내가 모델 만들어서 넣어가지구 실행해야지! `return "hello";` 니까 뷰리졸버로 템플릿 엔진에서 hello.html 찾아.
     - `resources:templates/` +{ViewName}+ `.html`
-- html 템플릿 웹브라우저에 보내자.
+- hello.html 템플릿 웹브라우저에 보내자.
 
 </br>
 </br>
 
 ## 빌드하고 실행하기
-cmd창에서 실행 ( InteliJ에서 실행하는 것과 동일 )
+cmd창에서 실행 ( InteliJ에서 실행하는 것과 동일. 같은 8080 포트를 사용하므로 둘 중 하나만 실행하면 됨. )
 1. `./gradlew build`
 2. `cd build/libs`
 3. `java -jar hello-spring-0.0.1-SNAPSHOT.jar`
 4. 실행 확인
+
+서버 배포할때는 `hello-spring-0.0.1-SNAPSHOT.jar` 파일만 복사하여 서버에 넣어주고, 실행시키면 된다.

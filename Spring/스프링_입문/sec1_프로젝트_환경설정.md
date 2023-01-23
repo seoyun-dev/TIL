@@ -1,13 +1,44 @@
 # 프로젝트 환경설정
+대부분의 개발자들이 스프링을 포기하는 이유는 처음부터 IOC, DI, AOP 같은 이론적 내용부터 학습하기 때문이다.  
+스프링은 웹 애플리케이션을 개발하기 위해 존재한다.  
+그러므로 우리는 '간단한 웹 애플리케이션 개발'을 하기 위해 아래 단계를 빠르게 수행하며 스프링을 배울 것이다.
+- 스프링 프로젝트 생성
+- 스프링 부트로 웹 서버 실행
+- 회원 도메인 개발
+- 웹 MVC 개발
+- DB 연동 - JDBC, JPA, 스프링 데이터 JPA
+- 테스트 케이스 작성  
+
+프로젝트에서 사용하는 최신 기술들로는 Spring Boot, Gradle, Thymeleaf, JPA, HIBERNATE, Tomcat이 있다.
+이 사용기술들이 어떻게 사용되는지 전반적인 감을 잡고 큰 그림을 잡는 것이 이 강의의 목표이다.  
+
+**강의 핵심 목표**  
+스프링 학습의 제대로 된 첫 길잡이 역할
+- 스프링 기술 그 자체에 매몰 X
+- 어떻게 사용하는지에 초점
+- 오래되거나 마이너한 스프링 기술 과감히 X
+- 실무 개발에 꼭 필요한 내용의 스프링 학습
+
 ## 프로젝트 생성
 start.spring.io 는 spring boot를 기반으로 spring 관련 프로젝트를 만들어주는 사이트
-- Project: Gradle-Groovy
+- Project: Gradle-Groovy(gradle은 버전 설정과 라이브러리 당겨오는 역할을 해줌)
 - Language: Java
+- Spring Boot: SNAPSHOT(테스트버전), M1 제외한 가장 최신 버전 선택 
 - Packaging: Jar
-- group(회사명, 그룹명), artifact(프로젝트명)
+- group(기업 도메인명/hello), artifact(프로젝트명/hello-spring)
 - Dependencies: Spring Web, Thymelear
 </br>
-</br>
+
+![](https://user-images.githubusercontent.com/91110192/214016262-874c901f-f3af-4b11-a295-cd273601cf5d.png)  
+- .gradle, .idea 무시
+- gradle: gradle 관련
+- src  
+  - main
+    - java: java code
+    - resources: java 코드 파일 제외한 XML, 설정파일, HTML 등 모든 것
+  - test: test code
+- .gitignore: 
+- build.gradle: gradle 설정  
 
 ## 라이브러리 살펴보기
 > Gradle은 의존관계가 있는 라이브러리르 함께 다운한다.  

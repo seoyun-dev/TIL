@@ -1,22 +1,31 @@
 # 스프링 웹 개발 기초
 웹 개발의 3가지 방법
-- 정적 컨텐츠: 서버 작업 x. html파일 내려주기
-- MVC와 템플릿 엔진: 서버에서 프로그래밍해서 html로 내려주기 (동적 컨텐츠)
-- API: 서버에서 작업하여 API로 내려주기  
+- 정적 컨텐츠: 서버 작업 x. html파일 내려주기 (sec1의 welcome page)
+- MVC와 템플릿 엔진: 서버에서 작업하여 html로 내려주기 (동적 컨텐츠)
+- API: 최근 프로젝트가 거의 모두 사용하는 방식. 서버에서 작업하여 JSON 포맷으로 내려주기  
 </br>
 
 ## 정적 컨텐츠
 <img src="https://raw.githubusercontent.com/smpark1020/tistory/master/Spring/%5B%EC%8A%A4%ED%94%84%EB%A7%81%20%EC%9E%85%EB%AC%B8%5D%20%EC%A0%95%EC%A0%81%20%EC%BB%A8%ED%85%90%EC%B8%A0/1.PNG">  
 
-</br>
+  
+- 톰켓서버: 스프링아, 컨트롤러 중에 mapping("hello-static") 찾아!
+- 톰켓서버: 어 없네? 그러면 resources/static/hello-static.html 찾아!
+- 스프링: 찾았다! HTML 파일 그대로 웹 브라우저에 내려줘야지.
+
 
 ## MVC와 템플릿 엔진
-MVC: Model, View, Controller - View는 화면 그리기에, Model과 Controller는 내부 처리, 비즈니스 로직에 집중  
+MVC: Model, View, Controller 
+- View는 화면 그리기에 집중
+- Model과 Controller는 내부 처리, 뒷단 비즈니스 로직에 집중  
 `http://localhost:8080/helllo-mvc?name=spring`  
 
-<img src ="https://images.velog.io/images/sewonkim/post/5a9a1966-73f9-43b5-ae21-2857b90a5144/image.png">
+<img src ="https://images.velog.io/images/sewonkim/post/5a9a1966-73f9-43b5-ae21-2857b90a5144/image.png">  
 
-</br>
+
+- 톰켓서버: 스프링아, 컨트롤러 중에 mapping("hello-mvc") 찾아!
+- 스프링: 찾았다! @RequestParam("name")이 있으니 name 입력해줘야지. 다 하고 나면 hello-template.html 찾자!
+- 스프링: 찾았다! HTML 파일을 입력받은 값으로 변환하여 웹 브라우저에 내려줘야지.
 
 ## API
 @ ResponseBody 객체 반환
@@ -46,7 +55,7 @@ MVC: Model, View, Controller - View는 화면 그리기에, Model과 Controller�
   
 <img src ="https://velog.velcdn.com/images/khoony0125/post/6d327242-5cb4-428d-9e7d-e05d4a5df525/image.png">  
 
-- `@GetMapping("hello-api")`를 컨트롤러에서 찾아봐.
-- 어? `@ResponseBody`가 붙어있네. Http의 BODY로 직접 반환해야지.
-- 객체면 Json으로, 문자열이면 String으로 변환해야 겠다.
-- 객체니까 JSON스타일로 변환해서 웹 브라우저에 보내주자.
+- 톰켓서버: `@GetMapping("hello-api")`를 컨트롤러에서 찾아봐.
+- 스프링: 어? `@ResponseBody`가 붙어있네. HTTP의 BODY로 직접 반환해야지.
+  - 객체면 Json으로, 문자열이면 String으로 변환해야 겠다.
+  - 객체(hello)니까 JSON스타일로 변환해서 웹 브라우저에 보내주자.

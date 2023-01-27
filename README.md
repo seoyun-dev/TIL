@@ -19,13 +19,13 @@
 - [클래스](https://github.com/seoyun-dev/TIL/blob/main/Java/6.%ED%81%B4%EB%9E%98%EC%8A%A4.md)
 
 ## Spring
-- [스프링 입문](https://github.com/seoyun-dev/TIL/tree/main/Spring/%EC%8A%A4%ED%94%84%EB%A7%81_%EC%9E%85%EB%AC%B8)
+- [스프링 입문 - 코드로 배우는 스프링 부트, 웹 MVC, DB 접근 기술](https://github.com/seoyun-dev/TIL/tree/main/Spring/%EC%8A%A4%ED%94%84%EB%A7%81_%EC%9E%85%EB%AC%B8)
   - [InteliJ 단축키](https://github.com/seoyun-dev/TIL/blob/main/Spring/%EC%8A%A4%ED%94%84%EB%A7%81_%EC%9E%85%EB%AC%B8/InteliJ%EB%8B%A8%EC%B6%95%ED%82%A4.md)
   - [sec1. 프로젝트 환경설정](https://github.com/seoyun-dev/TIL/blob/main/Spring/%EC%8A%A4%ED%94%84%EB%A7%81_%EC%9E%85%EB%AC%B8/sec1_%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8_%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95.md)
   - [sec2. 스프링 웹  개발 기초](https://github.com/seoyun-dev/TIL/blob/main/Spring/%EC%8A%A4%ED%94%84%EB%A7%81_%EC%9E%85%EB%AC%B8/sec2_%EC%8A%A4%ED%94%84%EB%A7%81_%EC%9B%B9_%EA%B0%9C%EB%B0%9C_%EA%B8%B0%EC%B4%88.md)
   - [sec3. 회원 관리 예제 - 백엔드 개발](https://github.com/seoyun-dev/TIL/blob/main/Spring/%EC%8A%A4%ED%94%84%EB%A7%81_%EC%9E%85%EB%AC%B8/sec3%20%ED%9A%8C%EC%9B%90_%EA%B4%80%EB%A6%AC_%EC%98%88%EC%A0%9C-%EB%B0%B1%EC%97%94%EB%93%9C_%EA%B0%9C%EB%B0%9C.md)
   - [sec4. 스프링 빈과 의존관계](https://github.com/seoyun-dev/TIL/blob/main/Spring/%EC%8A%A4%ED%94%84%EB%A7%81_%EC%9E%85%EB%AC%B8/sec4_%EC%8A%A4%ED%94%84%EB%A7%81_%EB%B9%88%EA%B3%BC_%EC%9D%98%EC%A1%B4%EA%B4%80%EA%B3%84.md)
   - [sec5. 회원 관리 예제 - 웹 MVC 개발](https://github.com/seoyun-dev/TIL/blob/main/Spring/%EC%8A%A4%ED%94%84%EB%A7%81_%EC%9E%85%EB%AC%B8/sec5_%ED%9A%8C%EC%9B%90_%EA%B4%80%EB%A6%AC_%EC%98%88%EC%A0%9C-%EC%9B%B9_MVC_%EA%B0%9C%EB%B0%9C.md)
-- [스프링_핵심원리_기본](https://github.com/seoyun-dev/TIL/tree/main/Spring/%EC%8A%A4%ED%94%84%EB%A7%81_%ED%95%B5%EC%8B%AC%EC%9B%90%EB%A6%AC_%EA%B8%B0%EB%B3%B8)
+- [스프링 핵심원리 - 기본편](https://github.com/seoyun-dev/TIL/tree/main/Spring/%EC%8A%A4%ED%94%84%EB%A7%81_%ED%95%B5%EC%8B%AC%EC%9B%90%EB%A6%AC_%EA%B8%B0%EB%B3%B8)
   - [sec0. 강의소개](https://github.com/seoyun-dev/TIL/blob/main/Spring/%EC%8A%A4%ED%94%84%EB%A7%81_%ED%95%B5%EC%8B%AC%EC%9B%90%EB%A6%AC_%EA%B8%B0%EB%B3%B8/sec0_%EA%B0%95%EC%9D%98%EC%86%8C%EA%B0%9C.md)
   - [sec1. 객체 지향 설계와 스프링](https://github.com/seoyun-dev/TIL/blob/main/Spring/%EC%8A%A4%ED%94%84%EB%A7%81_%ED%95%B5%EC%8B%AC%EC%9B%90%EB%A6%AC_%EA%B8%B0%EB%B3%B8/sec1_%EA%B0%9D%EC%B2%B4%20%EC%A7%80%ED%96%A5%20%EC%84%A4%EA%B3%84%EC%99%80%20%EC%8A%A4%ED%94%84%EB%A7%81.md)

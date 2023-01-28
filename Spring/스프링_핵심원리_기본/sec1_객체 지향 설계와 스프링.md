@@ -259,3 +259,7 @@ public class MemberService {
 - 기능을 확장할 가능성이 없다면, 구체 클래스를 직접 사용하고, 향후 꼭 필요할 때 리팩터링해서 인터페이스를 도입하는 것도 방법이다.
 
 
+# 책 추천
+- 객체지향 책 추천: 객체지향의 사실과 오해(http://www.yes24.com/Product/Goods/18249021) 
+- 스프링 책 추천(이건 필수다! 강의 끝나고 꼭 보길. 엄청 자세함): 토비의 스프링(http://www.yes24.com/Product/Goods/7516911)
+- JPA 책 추천: 자바 ORM 표준 JPA 프로그래밍(http://www.yes24.com/Product/Goods/19040233)

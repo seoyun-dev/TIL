@@ -108,9 +108,11 @@ service 패키지는 DB에 접근하는 코드는 repository에 위임하고, �
 
 
 **주문 도메인 클래스 다이어그램**
+
 ![](https://user-images.githubusercontent.com/91110192/216542664-8076171f-0437-410c-a103-22ac0d9d69ac.png)
 
 **주문 도메인 객체 다이어그램1**  
+
 ![](https://user-images.githubusercontent.com/91110192/216542681-39fcbcea-76ff-4692-a1c2-818ecbe07ab2.png)  
 
 회원 저장소 구현체 또는 할인 정책의 구현체가 바뀌어도 주문 서비스를 변경하지 않아도 된다. 즉, 역할들의 협력 관계를 그대로 재사용 할 수 있다.
@@ -132,3 +134,6 @@ service 패키지는 DB에 접근하는 코드는 repository에 위임하고, �
   - 정액 할인 정책 구현체 : `src/main/java/hello.core/discount/FixDiscountPolicy`
 
 ## 주문과 할인 도메인 실행과 테스트
+
+`src/main/OrderApp` 처럼 애플리케이션 로직으로 테스트 하는 것은 좋은 방법이 아니다.  
+`src/test/hello.core/order/OrderServiceTest` 처럼 JUnit 테스트를 사용하자.

@@ -17,3 +17,5 @@ cmd + option + v:
 soutv + enter : `System.out.println("obj = " + obj)` 자동 생성
 
 F2 : 오류 위치로 이동
+
+cmd + shift _ T: Test class 자동 생성

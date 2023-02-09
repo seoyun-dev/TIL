@@ -5,8 +5,15 @@ public class MemberServiceImpl implements MemberService {
 
     //DIP 위반
     //MemberServiceImpl은 MemberRepository(인터페이스) 뿐만 아니라 MemoryMemberRepository(구현체)에도 의존
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
+    //private final MemberRepository memberRepository = new MemoryMemberRepository();
     //인터페이스 변수 = new 클래스구현체(); 로 쓰는 이유. 나중에 구현체 대체되었을 때 대비.
+
+    private final MemberRepository memberRepository;
+    //생성자 주입
+    public MemberServiceImpl(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+
     @Override
     public void join(Member member) {
         memberRepository.save(member);

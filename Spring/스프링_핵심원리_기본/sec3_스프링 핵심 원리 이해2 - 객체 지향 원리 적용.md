@@ -1,39 +1,111 @@
 # 스프링 핵심 원리 이해2 - 객체 지향 원리 적용
 ## 새로운 할인 정책 개발
-**새로운 할인 정책을 확장해보자.**  
-악덕 기획자: 서비스 오픈 직전에 할인 정책을 지금처럼 고정 금액 할인이 아니라 좀 더 합리적인 주문 금액당 할인하는 정률% 할인으로 변경하고 싶어요. 예를 들어서 기존 정책은 VIP가 10000원을 주문하든 20000원을 주문하든 항상 1000원을 할인했는데, 이번에 새로 나온 정책은 10%로 지정해두면 고객이 10000원 주문시 1000원을 할인해주고, 20000원 주문시에 2000원을 할인해주는 거에요!  
-순진 개발자: 제가 처음부터 고정 금액 할인은 아니라고 했잖아요.  
-악덕 기획자: 애자일 소프트웨어 개발 선언 몰라요? “계획을 따르기보다 변화에 대응하기를”  
-순진 개발자: ... (하지만 난 유연한 설계가 가능하도록 객체지향 설계 원칙을 준수했지 후후)  
+### 새로운 할인 정책을 확장해보자.
+- 악덕 기획자: 서비스 오픈 직전에 할인 정책을 지금처럼 고정 금액 할인이 아니라 좀 더 합리적인 주문 금액당 할인하는 정률% 할인으로 변경하고 싶어요. 예를 들어서 기존 정책은 VIP가 10000원을 주문하든 20000원을 주문하든 항상 1000원을 할인했는데, 이번에 새로 나온 정책은 10%로 지정해두면 고객이 10000원 주문시 1000원을 할인해주고, 20000원 주문시에 2000원을 할인해주는 거에요!  
+- 순진 개발자: 제가 처음부터 고정 금액 할인은 아니라고 했잖아요.  
+- 악덕 기획자: 애자일 소프트웨어 개발 선언 몰라요? “계획을 따르기보다 변화에 대응하기를”  
+- 순진 개발자: ... (하지만 난 유연한 설계가 가능하도록 객체지향 설계 원칙을 준수했지 후후)  
+
+**RateDiscountPolicy 코드 추가**  
+**테스트 작성**  
+할인정책을 추가하고 테스트 까지 완료했다.
 
 ## 새로운 할인 정책 적용과 문제점
-**문제점 발견**
-우리는 역할과 구현을 충실하게 분리했다. OK  
-다형성도 활용하고, 인터페이스와 구현 객체를 분리했다. OK   OCP, DIP 같은 객체지향 설계 원칙을 충실히 준수했다  
-그렇게 보이지만 사실은 아니다.  
-DIP: 주문서비스 클라이언트( OrderServiceImpl )는 DiscountPolicy 인터페이스에 의존하면서 DIP를 지킨 것 같은데?  
-클래스 의존관계를 분석해 보자. 추상(인터페이스) 뿐만 아니라 구체(구현) 클래스에도 의존하고 있다.  
-추상(인터페이스) 의존: DiscountPolicy  
-구체(구현) 클래스: FixDiscountPolicy , RateDiscountPolicy  
-OCP: 변경하지 않고 확장할 수 있다고 했는데!  
-지금 코드는 기능을 확장해서 변경하면, 클라이언트 코드에 영향을 준다! 따라서 OCP를 위반한다  
+**방금 추가한 할인 정책을 적용해보자.**  
+할인 정책을 애플리케이션에 적용해보자.  
+할인 정책을 변경하려면 클라이언트인 OrderServiceImpl 코드를 고쳐야 한다. 
+```java
+public class OrderServiceImpl implements OrderService {
+  //    private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
+      private final DiscountPolicy discountPolicy = new RateDiscountPolicy();
+  }
+```
 
-어떻게 문제를 해결할 수 있을가?  
-클라이언트 코드인 OrderServiceImpl 은 DiscountPolicy 의 인터페이스 뿐만 아니라 구체 클래스도 함께 의존한다.  
-그래서 구체 클래스를 변경할 때 클라이언트 코드도 함께 변경해야 한다.  
-DIP 위반 추상에만 의존하도록 변경(인터페이스에만 의존)
-DIP를 위반하지 않도록 인터페이스에만 의존하도록 의존관계를 변경하면 된다.  
+**문제점 발견**  
+- 우리는 역할과 구현을 충실하게 분리했다. OK  
+- 다형성도 활용하고, 인터페이스와 구현 객체를 분리했다. OK   
+- OCP, DIP 같은 객체지향 설계 원칙을 충실히 준수했다  
+  - → 그렇게 보이지만 사실은 아니다.  
+- DIP: 주문서비스 클라이언트(`OrderServiceImpl`)는 `DiscountPolicy `인터페이스에 의존하면서 DIP를 지킨 것 같은데?  
+  - 클래스 의존관계를 분석해 보자. 추상(인터페이스) 뿐만 아니라 **구체(구현) 클래스에도 의존**하고 있다. → DIP 위반 
+    - 추상(인터페이스) 의존: `DiscountPolicy  `
+    - 구체(구현) 클래스: `FixDiscountPolicy` , `RateDiscountPolicy  `
+- OCP: 변경하지 않고 확장할 수 있다고 했는데!  
+  - → FixDiscountPolicy 를 RateDiscountPolicy 로 변경하는 순간 OrderServiceImpl 의 소스 코드도 함께 변경해야 한다! **OCP 위반**  
 
-## 관심사의 분리
-배우는 본인의 역할인 배역을 수행하는 것에만 집중해야 한다.  
-디카프리오는 어떤 여자 주인공이 선택되더라도 똑같이 공연을 할 수 있어야 한다.  
-공연을 구성하고, 담당 배우를 섭외하고, 역할에 맞는 배우를 지정하는 책임을 담당하는 별도의 공연 기획자가 나올시점이다.
-공연 기획자를 만들고, 배우와 공연 기획자의 책임을 확실히 분리하자.  
+![](https://velog.velcdn.com/images/tiger/post/5b69d6df-e030-449d-8ceb-ef164722a3f8/image.png)
 
-## AppConfig 리팩터링
-애플리케이션의 전체 동작 방식을 구성(config)하기 위해, 구현 객체를 생성하고, 연결하는 책임을 가지는 별도의 설정 클래스를 만들자.  
+**어떻게 문제를 해결할 수 있을까?**  
+DIP를 위반하지 않도록 인터페이스에만 의존하도록 의존관계를 변경하면 된다. 
+**인터페이스에만 의존하도록 코드 변경**  
+```java
+   public class OrderServiceImpl implements OrderService {
+      //private final DiscountPolicy discountPolicy = new RateDiscountPolicy();
+      private DiscountPolicy discountPolicy;
+}
+```
+- 인터페이스에만 의존하도록 설계와 코드를 변경했다.
+- 그런데 구현체가 없는데 어떻게 코드를 실행할 수 있을까?
+- 실제 실행을 해보면 NPE(null pointer exception)가 발생한다.
+
+**해결방안**  
+이 문제를 해결하려면 누군가가 클라이언트인 OrderServiceImpl 에 DiscountPolicy 의 구현 객체를 대신 생성하고 주입해주어야 한다.
+
+## 관심사의 분리  
+로미오와 줄리엣 공연을 하면 로미오 역할을 누가 할지 줄리엣 역할을 누가 할지는 배우들이 정하는게 아니다. 이전 코드는 마치 로미오 역할(인터페이스)을 하는 레오나르도 디카프리오(구현체, 배우)가 줄리엣 역할(인터페이스)을 하는 여자 주인공(구현체, 배우)을 직접 초빙하는 것과 같다. 디카프리오는 공연도 해야하고 동시에 여자 주인공도 공연에 직접 초빙해야 하는 다양한 책임을 가지고 있다.  
+
+**관심사를 분리하자**  
+- 배우는 본인의 역할인 배역을 수행하는 것에만 집중해야 한다.  
+- 디카프리오는 어떤 여자 주인공이 선택되더라도 똑같이 공연을 할 수 있어야 한다.  
+- 공연을 구성하고, 담당 배우를 섭외하고, 역할에 맞는 배우를 지정하는 책임을 담당하는 별도의 **공연 기획자**가 나올시점이다.
+- 공연 기획자를 만들고, 배우와 공연 기획자의 책임을 확실히 분리하자.  
+
+## AppConfig 등장
+애플리케이션의 전체 동작 방식을 구성(config)하기 위해, **구현 객체를 생성**하고, **연결**하는 책임을 가지는 별도의 설정 클래스를 만들자.  
 중복을 제거하고, 역할에 따른 구현이 보이도록 리팩터링 하자.
 
+- AppConfig는 애플리케이션의 실제 동작에 필요한 **구현 객체를 생성**한다.    
+  - MemberServiceImpl
+  - MemoryMemberRepository
+  - OrderServiceImpl
+  - FixDiscountPolicy
+- AppConfig는 생성한 객체 인스턴스의 참조(레퍼런스)를 **생성자를 통해서 주입(연결**)해준다. 
+  - MemberServiceImpl → MemoryMemberRepository
+    - 설계 변경으로 MemberServiceImpl 은 MemoryMemberRepository 를 의존하지 않는다! 단지 MemberRepository 인터페이스만 의존한다.
+    - MemberServiceImpl 입장에서 생성자를 통해 어떤 구현 객체가 들어올지(주입될지)는 알 수 없다.
+    - MemberServiceImpl 의 생성자를 통해서 어떤 구현 객체를 주입할지는 오직 외부( AppConfig )에서 결정된다.
+    - MemberServiceImpl 은 이제부터 의존관계에 대한 고민은 외부에 맡기고 실행에만 집중하면 된다.
+  - OrderServiceImpl → MemoryMemberRepository , FixDiscountPolicy
+    - 설계 변경으로 OrderServiceImpl 은 FixDiscountPolicy 를 의존하지 않는다! 단지 DiscountPolicy 인터페이스만 의존한다.
+    - OrderServiceImpl 입장에서 생성자를 통해 어떤 구현 객체가 들어올지(주입될지)는 알 수 없다.
+    - OrderServiceImpl 의 생성자를 통해서 어떤 구현 객체을 주입할지는 오직 외부( AppConfig )에서 결정한다.
+    - OrderServiceImpl 은 이제부터 실행에만 집중하면 된다
+
+>참고: 지금은 각 클래스에 생성자가 없어서 컴파일 오류가 발생한다. 바로 다음에 코드에서 생성자를 만든다.
+
+![](https://velog.velcdn.com/images/tiger/post/0f0a6211-b4dc-42e3-bde0-9dbe0f52b281/image.png)
+
+![](https://velog.velcdn.com/images/tiger/post/9425b530-aa3e-4d37-b5bb-f39a277b5ce6/image.png)
+
+## AppConfig 실행
+MemberApp, OrderApp, 테스트코드 수정  
+
+**정리**  
+- AppConfig를 통해서 관심사를 확실하게 분리했다.
+- 배역, 배우를 생각해보자.
+- AppConfig는 공연 기획자다.
+- AppConfig는 구체 클래스를 선택한다. 배역에 맞는 담당 배우를 선택한다. 애플리케이션이 어떻게 동작해야 할지 전체 구성을 책임진다.
+- 이제 각 배우들은 담당 기능을 실행하는 책임만 지면 된다. 
+- OrderServiceImpl 은 기능을 실행하는 책임만 지면 된다.
+## AppConfig 리팩터링
+현재 AppConfig를 보면 중복이 있고, 역할에 따른 구현이 잘 안보인다.  
+
+**기대하는 그림**  
+
+![](https://velog.velcdn.com/images/tiger/post/3e51abc6-d622-48e9-aea2-041ea5cb00d1/image.png)  
+
+- new MemoryMemberRepository() 이 부분이 중복 제거되었다. 이제 MemoryMemberRepository 를 다른 구현체로 변경할 때 한 부분만 변경하면 된다.
+- AppConfig 를 보면 역할(메소드명)과 구현 클래스(return)가 한눈에 들어온다. 애플리케이션 전체 구성이 어떻게 되어있는지 빠르게 파악할 수 있다.
 
 ## 새로운 구조와 할인 정책 적용  
 

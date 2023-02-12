@@ -6,7 +6,7 @@
 - [HTTP](https://github.com/seoyun-dev/TIL/blob/main/CS/HTTP.md)
 - [컴퓨터 구성요소와 운영체제](https://github.com/seoyun-dev/TIL/blob/main/CS/%EC%BB%B4%ED%93%A8%ED%84%B0%20%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C%EC%99%80%20%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C.md)
 - [API, REST API](https://github.com/seoyun-dev/TIL/blob/main/CS/API%2C%20REST%20API.md)
-
+- [Query parameter v.s. Path Variable](https://github.com/seoyun-dev/TIL/blob/main/CS/Query%20Paramete%20v.s.%20Path%20Variable.md)
 ## Git
 - [workflow](https://github.com/seoyun-dev/TIL/blob/main/Git/workflow.md)
 

@@ -19,3 +19,13 @@ soutv + enter : `System.out.println("obj = " + obj)` 자동 생성
 F2 : 오류 위치로 이동
 
 cmd + shift _ T: Test class 자동 생성
+
+iter + tab : for 문 자동생성
+
+cmd + E -> 선택 + enter : 최근 방문한 곳 지름길로 찾아가기
+
+opt + enter: 임포트
+
+cmd + shift + Enter : 커서가 글 중간에 있을 때 바로 다음줄로 커서 이동
+
+cmd + O : 모든 클래스 navigate

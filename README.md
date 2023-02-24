@@ -8,6 +8,7 @@
 - [API, REST API](https://github.com/seoyun-dev/TIL/blob/main/CS/API%2C%20REST%20API.md)
 - [Query parameter v.s. Path Variable](https://github.com/seoyun-dev/TIL/blob/main/CS/Query%20Paramete%20v.s.%20Path%20Variable.md)
 - [Serverless](https://github.com/seoyun-dev/TIL/blob/main/CS/Serverless.md)
+- [데이터베이스 정규화](https://github.com/seoyun-dev/TIL/blob/main/CS/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%A0%95%EA%B7%9C%ED%99%94.md)
 ## Git
 - [workflow](https://github.com/seoyun-dev/TIL/blob/main/Git/workflow.md)
 

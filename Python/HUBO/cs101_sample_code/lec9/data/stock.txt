@@ -1,8 +1,0 @@
-190,apple,900
-30,orange,1300
-13,pineapple,5500
-60,carrot,600
-30,cucumber,900
-20,egg plant,1100
-10,zuccini,1300
-70,garlic,300

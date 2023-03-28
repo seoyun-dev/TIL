@@ -1,6 +1,6 @@
 from cs1robots import *
 
-create_world(streets=11, avenues=7)
+create_world(streets=11, avenues=6)
 
 hubo = Robot()
 hubo.set_trace('blue')
@@ -31,14 +31,14 @@ def move_and_up_cycle():
     while hubo.front_is_clear():
         hubo.move()
 
+
 go_up_cycle()
-move_and_down_cycle()
-# 로봇 avenue(가로)가 짝수일 때, left 비었다면 -> 한 칸 이동 후 up
-while hubo.left_is_clear():
-    move_and_up_cycle()
-    # 로봇 avenue가 홀수일 때, right 비었다면 -> 한 칸 이동 후 down
-    if hubo.right_is_clear():
-        move_and_down_cycle()
+# 로봇 avenue(가로)가 홀수일 때, right 비었다면 -> 한 칸 이동 후 down
+while hubo.right_is_clear():
+    move_and_down_cycle()
+    # 로봇 avenue가 짝수일 때, left 비었다면 -> 한 칸 이동 후 up
+    if hubo.left_is_clear():
+        move_and_up_cycle()
     # right가 벽일 때 종료
     else:
         break

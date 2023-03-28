@@ -37,6 +37,7 @@ def after_cycle_to_start_cycle():
     turn_right()
 
 hubo.move()
+
 for i in range(2):
     pick_up_one_cycle()
     after_cycle_to_start_cycle()

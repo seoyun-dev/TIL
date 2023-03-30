@@ -1,5 +1,5 @@
 avenues = 19
-streets = 22
+streets = 15
 robot = (2, 6, 'E', 10)
 walls = [
     (5, 6), 

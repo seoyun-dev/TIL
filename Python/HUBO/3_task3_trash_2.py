@@ -9,6 +9,10 @@ def turn_right():
     for _ in range(3):
         hubo.turn_left()
 
+def turn_around():
+    for _ in range(2):
+        hubo.turn_left()
+
 # 정면으로 이동하며 pick beepers
 def move_straight_and_pick_beepers():
     # cycle 시작할 때 beeper 있으면 줍기
@@ -28,13 +32,32 @@ def first_half_to_second_half():
 
 # 오른쪽으로 돌고 한 칸 이동 후 오른쪽으로 돌기
 def cycle_to_cycle():
-    hubo.turn_right()
+    turn_right()
     hubo.move()
-    hubo.turn_right()
+    turn_right()
 
+move_straight_and_pick_beepers()
+while hubo.left_is_clear():
+    first_half_to_second_half()
+    move_straight_and_pick_beepers()
+    if hubo.right_is_clear():
+        cycle_to_cycle()
+        move_straight_and_pick_beepers()
+    else:
+        break
 
-while True:
-    
+turn_right()
+# hubo가 왼쪽에 있으면 north 보고, 오른쪽에 있으면 south
+if hubo.facing_north():
+    turn_around()
+    while hubo.front_is_clear():
+        hubo.move()
+else:
+    while hubo.front_is_clear():
+        hubo.move()
+    turn_right()
+    while hubo.front_is_clear():
+        hubo.move()
 
 # 집에 돌아와 drop beepers
 while hubo.carries_beepers():

@@ -14,39 +14,35 @@ def turn_around():
     for _ in range(2):
         hubo.turn_left()
 
-# 시작점에 drop beeper 후 오른쪽으로 돌아 한 칸 이동
+def judgment():
+    # 1. 오른쪽이 뚫렸을 때
+    if hubo.right_is_clear():
+        # 창이 열린건지 길인지 판단 위해 이동
+        # 1-1. 오른쪽이 길일경우 move 후 끝
+        turn_right()
+        hubo.move()
+        # 1-2. 오른쪽 창이 열림 -> 자리 돌아와 drop_beeper 하고 move
+        if hubo.right_is_clear():
+            turn_around()
+            hubo.move()
+            turn_right()
+            hubo.drop_beeper()
+            hubo.move()
+    # 2. 정면이 벽일 때 -> 왼쪽으로 돌아 move
+    elif not hubo.front_is_clear():
+        hubo.turn_left()
+        hubo.move()
+    # 3. 정면이 벽이 아닐 때 -> move
+    else:
+        hubo.move()
+
+# 시작점에 beeper 두기
 hubo.drop_beeper()
 turn_right()
 hubo.move()
+# 시작점(beeper)에 올때까지 이동
 while not hubo.on_beeper():
-    while hubo.front_is_clear():
-        hubo.move()
-        # 판단
-        if hubo.right_is_clear():
-            turn_right()
-            hubo.move()
-            # 열린창
-            if hubo.right_is_clear():
-                turn_around()
-                hubo.move()
-                turn_right()
-                hubo.drop_beeper()
-            # 길
-            else:
-                turn_around()
-                hubo.move()
-                turn_around()
-                break
-    hubo.turn_left()
-
-
-# while 정면이 clear하면(정면이 벽이 아니면)
-    # 이동
-    # if 오른쪽이 뚫렸으면
-        # 창이 열린건지 길인지 판단
-            # if 오른쪽 창이 열렸으면 drop_beeper
-            # else if 오른쪽이 길이면 turn_right
-                # turn_around 후 break (turn_left시 길을 볼 수 있또록)
-# 정면이 벽이면 turn_left
-
-# 휴보가 on_beeper(시작점)이면 멈춤
+    judgment()
+# 시작점 도착시 beeper 줍기
+hubo.pick_beeper()
+turn_right()

@@ -24,48 +24,28 @@ def move_and_count():
     count += 1
 
 def pick_and_move_right_and_up():
-    # N 바라보는 기준
-    turn_right()
     hubo.pick_beeper()
+    turn_right()
     move_and_count()
     hubo.turn_left()
     move_and_count()
 
-def pick_and_move_right_and_down():
-    hubo.pick_beeper()
-    turn_right()
-    hubo.move()
-    turn_right()
-    hubo.move()
-
-def pick_and_move_down_and_right():
-    hubo.pick_beeper()
-    hubo.move()
-    turn_right()
-    hubo.move()
+def judgment():
+    if hubo.front_is_clear():
+        pick_and_move_right_and_up()
 
 # Robot (1,7)로 이동
 hubo.turn_left()
 for _ in range(6):
     move_and_count()
 
-# face=0: face North, face=1: face South
-face = 0 
 while hubo.on_beeper():
-    if face == 0 and hubo.front_is_clear():
-        pick_and_move_right_and_up()
-    elif face == 0 and not hubo.front_is_clear():
-        pick_and_move_right_and_down()
-    elif face == 1:
-        pick_and_move_down_and_right()
+    judgment()
 
-hubo.pick_beeper()      # (6,12) pick beeper
-
-
-
-
-
-
-
+# 소용돌이 모양
+# (1,7)에서 N 보고 있는 hubo
+# 픽, 오른쪽, 위 반복 -> 언제까지? 벽에 부딪히기 전까지 혹은 비퍼 오른쪽 위에 비퍼가 없을때
+# turn_right()
+# 픽, 오른쪽, 위 반복
 
 print("move count = ", count)

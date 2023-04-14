@@ -1,5 +1,3 @@
-# 최종 카운트가 76이면 최소
-
 from cs1robots import *
 
 load_world("./worlds/harvest2.wld")
@@ -7,7 +5,6 @@ load_world("./worlds/harvest2.wld")
 hubo = Robot()
 hubo.set_trace('red')
 
-# 초기값 설정
 count = 0
 
 def turn_right():
@@ -18,6 +15,7 @@ def turn_around():
     for _ in range(2):
         hubo.turn_left()
 
+# 한 번 이동하면 count += 1 되는 함수
 def move_and_count():
     global count
     hubo.move()
@@ -30,22 +28,25 @@ def pick_and_move_right_and_up():
     hubo.turn_left()
     move_and_count()
 
-def judgment():
-    if hubo.front_is_clear():
+def one_cycle_pick_and_move(i):
+    for _ in range(i):
         pick_and_move_right_and_up()
+    turn_right()
 
-# Robot (1,7)로 이동
+# 휴보 (1, 7)로 이동
 hubo.turn_left()
 for _ in range(6):
     move_and_count()
 
-while hubo.on_beeper():
-    judgment()
-
-# 소용돌이 모양
-# (1,7)에서 N 보고 있는 hubo
-# 픽, 오른쪽, 위 반복 -> 언제까지? 벽에 부딪히기 전까지 혹은 비퍼 오른쪽 위에 비퍼가 없을때
-# turn_right()
-# 픽, 오른쪽, 위 반복
+for i in range(5):
+    i = 5-i
+    if i == 5:
+        for _ in range(3):
+            one_cycle_pick_and_move(i)
+    else:
+        for _ in range(2):
+            one_cycle_pick_and_move(i)
+# 마지막 (6,6) 비퍼 줍기
+hubo.pick_beeper()
 
 print("move count = ", count)

@@ -53,13 +53,11 @@ def drop_beepers_by_num(result_str):
         hubo.move()
 
 
-first_num_string = ""
-first_num_string += collect_number_at_street2()
+first_num_string = collect_number_at_street2()
 
 right_move_right()
 
-second_num_string = ""
-second_num_string += collect_number_at_street1()
+second_num_string = collect_number_at_street1()
 
 plus_result = str(int(first_num_string) + int(second_num_string))
 

@@ -1,28 +1,65 @@
 from cs1robots import *
 
 create_world()
-
 hubo = Robot()
-hubo.set_trace('blue')
-
+hubo.set_trace('red')
 def turn_right():
-    for i in range(3):
+    for _ in range(3):
         hubo.turn_left()
 
-# 휴보가 왼쪽으로 돌아 올라갔다가 내려오는 함수
-def move_one_cycle():
-    hubo.turn_left()
-    for i in range(9):
-        hubo.move()
-    turn_right()
-    hubo.move()
-    turn_right()
-    for i in range(9):
+def move_9_steps():
+    for _ in range(9):
         hubo.move()
 
-for i in range(4):
-    move_one_cycle()
-    # 왼쪽으로 돌고 한칸 전진
+def move_one_cycle():
+    move_9_steps()
+    turn_right()
+    hubo.move()
+    turn_right()
+    move_9_steps()
+
+def cycle_to_cycle():
     hubo.turn_left()
     hubo.move()
+    hubo.turn_left()
+
+hubo.turn_left()
+for _ in range(4):
+    move_one_cycle()
+    cycle_to_cycle()
 move_one_cycle()
+
+
+# 교수님 풀이
+from cs1robots import *
+create_world()
+hubo=Robot()
+hubo.set_trace("blue")
+
+def turn_right():
+    for _ in range(3):
+        hubo.turn_left()
+
+def move_9():
+    for _ in range(9):
+        hubo.move()
+
+def zigzag():
+    move_9()
+    turn_right()
+    hubo.move()
+    turn_right()
+    move_9()
+
+def zig():
+    zigzag()
+    hubo.turn_left()
+    hubo.move()
+    hubo.turn_left()
+
+hubo.turn_left()
+zig()
+zig()
+zig()
+zig()
+zigzag()

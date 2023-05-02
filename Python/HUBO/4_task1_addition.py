@@ -66,3 +66,9 @@ move_until_front_not_clear()
 turn_around()
 
 drop_beepers_by_num(plus_result)
+
+# 교수님 풀이
+# 10을 곱하고 뒤에걸 먹는것을 반복
+# 다 더하고 아래로 내려오면서 하나씩 계산하면서 바로바로 drop
+# step2 + step1의 1자리수 한다음 1자리수 버리고. 그 후 두번째자리 더하고 한다음 2자리수 버리고
+# 끝까지 갔다가 다시 돌아가서 내려놓는것 아님

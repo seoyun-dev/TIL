@@ -6,7 +6,7 @@ from cs1robots import *
 load_world("./worlds/harvest2.wld")
 
 hubo = Robot()
-hubo.set_trace('red')
+hubo.set_trace('blue')
 
 count = 0
 
@@ -38,8 +38,8 @@ def pick_and_move_right_and_up(robot):
     turn_left(robot)
     move_and_count(robot)
 
-def one_cycle_pick_and_move(robot, i):
-    for _ in range(i):
+def one_cycle_pick_and_move(robot, n):
+    for _ in range(n):
         pick_and_move_right_and_up(robot)
     turn_right(robot)
 

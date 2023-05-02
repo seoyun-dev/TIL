@@ -1,8 +1,8 @@
 from cs1robots import *
 
 # load_world("./worlds/add1.wld")
-load_world("./worlds/add2.wld")
-# load_world("./worlds/add34.wld")
+# load_world("./worlds/add2.wld")
+load_world("./worlds/add34.wld")
 
 hubo = Robot(street=2, beepers=100)
 
@@ -22,7 +22,7 @@ def collect_number_at_street2():
     return num_string
 
 def collect_number_at_street1():
-    num_string = ""                                # street 2에서 최종적으로 만든 숫자(String)
+    num_string = ""                                # street 1에서 최종적으로 만든 숫자(String)
     while hubo.front_is_clear():
         num_string = pick_and_count() + num_string  # 최종 숫자 str = 이번에 센 str + 지금까지 컬렉 str
         hubo.move()

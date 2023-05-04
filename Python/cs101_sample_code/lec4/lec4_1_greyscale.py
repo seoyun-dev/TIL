@@ -13,4 +13,4 @@ for y in range(h):
     l = luma(color)
     grey = (l, l, l)
     img.set(x, y, grey)
-  img.show()
+img.show()

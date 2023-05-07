@@ -12,7 +12,7 @@ def fun2(x, y):
 
 a = 10
 b = 20
-print (a, b)
-print (fun1(30, 40))
-print (a, b)
-print (fun2(30, 40))
+print (a, b)          # 10 20
+print (fun1(30, 40))  # 30 40 / 70
+print (a, b)          # 10 20
+print (fun2(30, 40))  # 10 20 / 30

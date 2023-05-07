@@ -22,6 +22,7 @@ def animate_sunrise(sun, morning_sun, noon_sun,
   for angle in range(181):
     rad = (angle/180.0) * math.pi
     t   = math.sin(rad)
+    # morning_color : noon_color = 1-t : t 비율로 섞음
     col = interpolate_colors(t, morning_color, noon_color)
     sun.setFillColor(col)
     col = interpolate_colors(t, dark_sky, bright_sky)

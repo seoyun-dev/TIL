@@ -33,7 +33,7 @@ canvas.remove(sq)
 time.sleep(3)
 r.scale(2.5)
 for i in range(50):
-    r.rotate(1*25)
+    r.rotate(25)
     r.scale(0.95)
     time.sleep(0.05)
 canvas.remove(r)

@@ -1,16 +1,29 @@
 from cs1graphics import *
 
-def draw_grass():
-    grass = Layer()
+def draw_background():
+    background = Layer()
+
     green_grass = Rectangle(900, 150, Point(450, 425))
     green_grass.setFillColor('springgreen2')
     green_grass.setBorderColor('springgreen2')
-    grass.add(green_grass)
-    return grass
+    background.add(green_grass)
+
+    heart1 = Polygon(Point(200, 70), Point(220, 50), Point( 240, 70), Point(260, 50), Point(280, 70), Point(240, 120))
+    heart1.setFillColor('hotpink')
+    heart1.setBorderColor('pink')
+    background.add(heart1)
+
+    heart2 = Polygon(Point(470, 70), Point(490, 50), Point(510, 70), Point(530, 50), Point(550, 70), Point(510, 120))
+    heart2.setFillColor('hotpink')
+    heart2.setBorderColor('pink')
+    background.add(heart2)
+
+    return background
 
 # 동물 생성 후 이동하는 함수. 병렬 이동 말고 다리나 꼬리가 움직이도록.
 def draw_animal():
     chick = Layer()
+
     head = Circle(50, Point(120, 250))
     head.setFillColor('Yellow')
     head.setBorderColor('Yellow')
@@ -20,7 +33,7 @@ def draw_animal():
     eye.setFillColor('black')
     chick.add(eye)
 
-    mouse = Polygon(Point(165, 245), Point(180, 255), Point(165, 265))
+    mouse = Polygon(Point(168, 245), Point(183, 255), Point(168, 265))
     mouse.setFillColor('brown4')
     mouse.setBorderColor('brown4')
     mouse.setDepth(60)
@@ -67,9 +80,14 @@ def draw_animal2():
     eye.setFillColor('black')
     chick.add(eye)
 
-    eyelash = Ellipse(1, 5, Point(760,238))
-    eyelash.setFillColor('black')
-    chick.add(eyelash)
+    eyelash1 = Ellipse(1, 5, Point(763,231))
+    eyelash1.setFillColor('black')
+    eyelash1.rotate(45)
+    chick.add(eyelash1)
+    eyelash2 = Ellipse(1, 8, Point(764,235))
+    eyelash2.setFillColor('black')
+    eyelash2.rotate(55)
+    chick.add(eyelash2)
 
     mouse = Polygon(Point(735, 245), Point(720, 255), Point(745, 265))
     mouse.setFillColor('brown4')
@@ -95,12 +113,12 @@ def draw_animal2():
     back_leg.setDepth(70)
     chick.add(back_leg)
     
-    front_foot = Ellipse(25, 10, Point(785,395))
+    front_foot = Ellipse(23, 10, Point(785,395))
     front_foot.setFillColor('hotpink')
     front_foot.setBorderColor('hotpink')
     chick.add(front_foot)
 
-    back_foot = Ellipse(25, 10, Point(815,395))
+    back_foot = Ellipse(23, 10, Point(825,395))
     back_foot.setFillColor('blue')
     back_foot.setBorderColor('blue')
     chick.add(back_foot)
@@ -117,10 +135,11 @@ canvas = Canvas(900, 500)
 canvas.setBackgroundColor("light sky blue1")
 canvas.setTitle("moving animal by PSY")
 
-grass = draw_grass()
+grass = draw_background()
 canvas.add(grass)
 
 boy_chick = draw_animal()
 girl_chick = draw_animal2()
 canvas.add(boy_chick)
 canvas.add(girl_chick)
+

@@ -16,7 +16,7 @@ def bank():
     global balance
     answer = input("Deposit(d) or withdrawal(w) or balance check(c)?? ")
     if answer == "":
-        return 
+        return answer
     elif answer == "d":
         money = int(input("How much do you want to deposit? "))
         deposit(money)

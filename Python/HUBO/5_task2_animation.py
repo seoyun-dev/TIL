@@ -1,11 +1,11 @@
 from cs1graphics import *
+import time 
 
-# canvas
 canvas = Canvas(900, 500)
 canvas.setBackgroundColor("light sky blue1")
 canvas.setTitle("moving animal by PSY")
 
-# 배경
+# 배경 그리기
 background = Layer()
 
 green_grass = Rectangle(900, 150, Point(450, 425))
@@ -28,50 +28,51 @@ canvas.add(background)
 # 남자 병아리
 boy_chick = Layer()
 
-head = Circle(50, Point(120, 250))
-head.setFillColor('Yellow')
-head.setBorderColor('Yellow')
-boy_chick.add(head)
+boy_head = Circle(50, Point(120, 250))
+boy_head.setFillColor('Yellow')
+boy_head.setBorderColor('Yellow')
+boy_chick.add(boy_head)
 
-eye = Ellipse(7, 15, Point(140, 240))
-eye.setFillColor('black')
-boy_chick.add(eye)
+boy_eye = Ellipse(7, 15, Point(140, 240))
+boy_eye.setFillColor('black')
+boy_chick.add(boy_eye)
 
-mouse = Polygon(Point(168, 245), Point(183, 255), Point(168, 265))
-mouse.setFillColor('brown4')
-mouse.setBorderColor('brown4')
-mouse.setDepth(60)
-boy_chick.add(mouse)
+boy_mouse = Polygon(Point(168, 245), Point(183, 255), Point(168, 265))
+boy_mouse.setFillColor('brown4')
+boy_mouse.setBorderColor('brown4')
+boy_mouse.setDepth(60)
+boy_chick.add(boy_mouse)
 
-body = Ellipse(140, 110, Point(90, 320))
-body.setFillColor('Yellow')
-body.setBorderColor('Yellow')
-body.setDepth(60) 
-boy_chick.add(body)
+boy_body = Ellipse(140, 110, Point(90, 320))
+boy_body.setFillColor('Yellow')
+boy_body.setBorderColor('Yellow')
+boy_body.setDepth(60) 
+boy_chick.add(boy_body)
 
-front_leg =  Rectangle(5, 25, Point(110, 380))
-front_leg.setFillColor('brown4')
-front_leg.setBorderColor('brown4')
-front_leg.setDepth(70)
-boy_chick.add(front_leg)
+boy_front_leg =  Rectangle(5, 25, Point(110, 380))
+boy_front_leg.setFillColor('brown4')
+boy_front_leg.setBorderColor('brown4')
+boy_front_leg.setDepth(70)
+boy_chick.add(boy_front_leg)
 
-back_leg =  Rectangle(5, 25, Point(70, 380))
-back_leg.setFillColor('brown4')
-back_leg.setBorderColor('brown4')
-back_leg.setDepth(70)
-boy_chick.add(back_leg)
+boy_back_leg =  Rectangle(5, 25, Point(70, 380))
+boy_back_leg.setFillColor('brown4')
+boy_back_leg.setBorderColor('brown4')
+boy_back_leg.setDepth(70)
+boy_chick.add(boy_back_leg)
 
-front_foot = Ellipse(25, 10, Point(115,395))
-front_foot.setFillColor('hotpink')
-front_foot.setBorderColor('hotpink')
-boy_chick.add(front_foot)
+boy_front_foot = Ellipse(25, 10, Point(115,395))
+boy_front_foot.setFillColor('hotpink')
+boy_front_foot.setBorderColor('hotpink')
+boy_chick.add(boy_front_foot)
 
-back_foot = Ellipse(25, 10, Point(75,395))
-back_foot.setFillColor('blue')
-back_foot.setBorderColor('blue')
-boy_chick.add(back_foot)
+boy_back_foot = Ellipse(25, 10, Point(75,395))
+boy_back_foot.setFillColor('blue')
+boy_back_foot.setBorderColor('blue')
+boy_chick.add(boy_back_foot)
 
 canvas.add(boy_chick)
+
 
 # 여자 병아리
 girl_chick = Layer()
@@ -105,13 +106,13 @@ body.setBorderColor('Yellow')
 body.setDepth(60) 
 girl_chick.add(body)
 
-front_leg =  Rectangle(5, 25, Point(790, 380))
+front_leg = Rectangle(5, 25, Point(790, 380))
 front_leg.setFillColor('brown4')
 front_leg.setBorderColor('brown4')
 front_leg.setDepth(70)
 girl_chick.add(front_leg)
 
-back_leg =  Rectangle(5, 25, Point(830, 380))
+back_leg = Rectangle(5, 25, Point(830, 380))
 back_leg.setFillColor('brown4')
 back_leg.setBorderColor('brown4')
 back_leg.setDepth(70)
@@ -129,5 +130,63 @@ girl_chick.add(back_foot)
 
 canvas.add(girl_chick)
 
-# 첫번째 하트 먹기
+# 첫번째 점프
+time.sleep(1)
+boy_front_leg.rotate(-30)
+boy_front_foot.rotate(-30)
+boy_front_foot.move(5,0)
+boy_back_leg.rotate(30)
+boy_back_foot.rotate(30)
+boy_back_foot.move(-5, 0)
+for _ in range(100):
+    boy_chick.move(1.2, -1.7)
 
+background.remove(heart1)
+
+for _ in range(100):
+    boy_chick.move(1.2, 1.7)
+boy_front_leg.rotate(30)
+boy_front_foot.rotate(30)
+boy_front_foot.move(-5,0)
+boy_back_leg.rotate(-30)
+boy_back_foot.rotate(-30)
+boy_back_foot.move(5, 0)
+
+# 두 번째 점프
+time.sleep(0.5)
+boy_front_leg.rotate(-30)
+boy_front_foot.rotate(-30)
+boy_front_foot.move(5,0)
+boy_back_leg.rotate(30)
+boy_back_foot.rotate(30)
+boy_back_foot.move(-5, 0)
+for _ in range(100):
+    boy_chick.move(1.2, -1.7)
+
+background.remove(heart2)
+
+for _ in range(100):
+    boy_chick.move(1.2, 1.7)
+boy_front_leg.rotate(30)
+boy_front_foot.rotate(30)
+boy_front_foot.move(-5,0)
+boy_back_leg.rotate(-30)
+boy_back_foot.rotate(-30)
+boy_back_foot.move(5, 0)
+
+# 만나면 반갑다고 뽀뽀뽀
+for _ in range(60):
+    boy_chick.move(1, 0)
+
+
+
+# 빅하트 만들고 확대
+big_heart = Layer()
+heart = Polygon(Point(650, 70), Point(670, 50), Point(690, 70), Point(710, 50), Point(730, 70), Point(690, 120))
+heart.setFillColor('hotpink')
+heart.setBorderColor('pink')
+big_heart.add(heart)
+canvas.add(big_heart)
+
+for _ in range(50):
+    heart.scale(1.015)

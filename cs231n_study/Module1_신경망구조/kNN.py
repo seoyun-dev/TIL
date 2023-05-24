@@ -1,4 +1,5 @@
 import torch
+import numpy as np
 from torchvision import datasets, transforms
 import matplotlib.pyplot as plt
 
@@ -14,7 +15,7 @@ class KNNClassifier:
     def predict(self, X_test):
         # 두 텐서간의 거리
         distances = torch.cdist(X_test, self.X)   
-        # 가장 distances가 가까운(작은) k개의 값서과 해당 인덱스 반환 (dim=1: 행 기준)                      
+        # 가장 distances가 가까운(작은) k개의 값과 해당 인덱스 반환 (dim=1: 행 기준)                      
         _, indices = torch.topk(distances, self.k, dim=1, largest=False) 
         # k_nearest_labels = 장 가까운 k개 이웃의 레이블 
         k_nearest_labels = self.y[indices]
@@ -50,21 +51,11 @@ test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=64, shuffle=F
 # /255.0: 픽셀 값 정규화 작업 0~255 -> 0~1
 X_train = train_dataset.data.view(len(train_dataset), -1).float() / 255.0
 y_train = train_dataset.targets
-print(X_train[0:10])
 
 
 # 테스트 데이터 준비
 X_test = test_dataset.data.view(len(test_dataset), -1).float() / 255.0
 y_test = test_dataset.targets
-
-# k-NN 분류기 생성
-knn = KNNClassifier(k=5)
-
-# 모델 훈련
-knn.fit(X_train, y_train)
-
-# 테스트 데이터로 예측 수행
-predictions = knn.predict(X_test)
 
 
 k_values = [1, 3, 5, 7, 9]  # k 값들
@@ -72,6 +63,7 @@ n_splits = 5                # 교차 검증 폴드 수
 
 # 교차 검증 및 정확도 기록
 accuracies = []
+std_deviations = []
 for k in k_values:
     fold_accuracies = []
     fold_size = len(X_train) // n_splits
@@ -85,23 +77,33 @@ for k in k_values:
         X_train_cat = torch.cat([X_train[:val_start], X_train[val_end:]])
         y_train_cat = torch.cat([y_train[:val_start], y_train[val_end:]])
         
-        # k-NN 모델 학습 및 예측
+        # k-NN 모델 학습
         knn = KNNClassifier(k)
         knn.fit(X_train_cat, y_train_cat)
-        y_pred = knn.predict(X_val)
         
         # 검증 데이터셋 정확도 기록
         predictions = knn.predict(X_val)
         accuracy = torch.sum(predictions == y_val).item() / len(y_val) * 100
         fold_accuracies.append(accuracy)
     
-    # 폴드별 정확도 평균 계산
-    mean_accuracy = torch.mean(torch.tensor(fold_accuracies))
-    accuracies.append(mean_accuracy.item())
+    # 검증 셋의 성능 점 그리기
+    for accuracy in fold_accuracies:
+        plt.scatter(k, accuracy, c='r')
+
+    # 폴드별 정확도 평균 및 표준편차 계산
+    mean_accuracy = np.mean(fold_accuracies)
+    std_deviation = np.std(fold_accuracies)
+    accuracies.append(mean_accuracy)
+    std_deviations.append(std_deviation)
+    # NOTE 표준편차 v.s. 표준오차 -std_errors.append(std_deviation / np.sqrt(n_splits))
+
 
 # 그래프 그리기
-plt.plot(k_values, accuracies, marker='o')
+plt.errorbar(k_values, accuracies, yerr=std_deviations, fmt='o-', color='b', ecolor='g')
+
 plt.xlabel('k')
 plt.ylabel('Accuracy')
 plt.title('Cross-Validation Accuracy of k-NN')
+plt.xticks(k_values)
+
 plt.show()

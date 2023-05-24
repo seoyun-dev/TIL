@@ -25,6 +25,7 @@ class KNNClassifier:
 
 
 
+
 # MNIST 데이터셋 전처리 파이프라인 (주로, 이미지 데이터)
 transform = transforms.Compose([
     transforms.ToTensor(),                  # 입력 데이터를 tensor로 변환
@@ -47,6 +48,9 @@ test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=64, shuffle=F
 
 # 훈련 데이터 준비
 # X_train = shape(데이터 개수, 이미지 크기)인 2차원 텐서. 각 행은 하나의 이미지를 나타내며, 각 열은 해당 이미지의 픽셀 값을 나타냄
+# train_dataset.data는 MNIST 데이터셋의 이미지 데이터를 나타내는 텐서
+# view(len(train_dataset), -1): 텐서의 모양을 (len(train_dataset), -1)로 변환하는 연산. -1은 해당 차원의 크기를 자동으로 계산하도록 하는 특수한 값. 
+# 따라서 view(len(train_dataset), -1)는 원래 이미지 데이터의 크기를 유지하면서 첫 번째 차원을 len(train_dataset)로 설정하고, 두 번째 차원은 자동으로 계산하여 설정
 # view(): 텐서의 형태 변경하는 메서드 (이미지는 3차원 텐서 형태)
 # /255.0: 픽셀 값 정규화 작업 0~255 -> 0~1
 X_train = train_dataset.data.view(len(train_dataset), -1).float() / 255.0
@@ -60,6 +64,7 @@ y_test = test_dataset.targets
 
 k_values = [1, 3, 5, 7, 9]  # k 값들
 n_splits = 5                # 교차 검증 폴드 수
+
 
 # 교차 검증 및 정확도 기록
 accuracies = []
@@ -86,7 +91,7 @@ for k in k_values:
         accuracy = torch.sum(predictions == y_val).item() / len(y_val) * 100
         fold_accuracies.append(accuracy)
     
-    # 검증 셋의 성능 점 그리기
+    # 특정 k에 대한 검증 셋의 정확도 점 그리기
     for accuracy in fold_accuracies:
         plt.scatter(k, accuracy, c='r')
 
@@ -95,7 +100,9 @@ for k in k_values:
     std_deviation = np.std(fold_accuracies)
     accuracies.append(mean_accuracy)
     std_deviations.append(std_deviation)
-    # NOTE 표준편차 v.s. 표준오차 -std_errors.append(std_deviation / np.sqrt(n_splits))
+    # NOTE 표준오차 -std_errors.append(std_deviation / np.sqrt(n_splits))
+    # n_splits가 많아질수록 표준편차는 당연히 줄어든다. 그렇게 되면 n마다 객관적인 표준편차를 구하기 힘들어지므로 np.sqrt(n_splits)로 나눠주게 된다.
+    # 고로 표준오차를 쓰는 것이 더 좋다.
 
 
 # 그래프 그리기

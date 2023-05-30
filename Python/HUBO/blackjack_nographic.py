@@ -13,7 +13,7 @@ SUITS = [ "Clubs", "Diamonds", "Hearts", "Spades" ]
 
 
 
-### (TASK2) :Card 클래스를 생성하시오 (생성자 부분을 작성하시오) (Card object가 그 속성으로 face(2~A)와 suit(문양)를 갖도록)
+### (TASK2) Card 클래스를 생성하시오 (생성자 부분을 작성하시오) (Card object가 그 속성으로 face(2~A)와 suit(문양)를 갖도록)
 ### J,Q,K는 10으로 A는 11로 생각
 ### 예시 card1=Card("Jack","Diamonds") 일 때, cards1.face이 "Jack"이고 cards1.suit이 "Diamonds"가 되도록
 class Card():

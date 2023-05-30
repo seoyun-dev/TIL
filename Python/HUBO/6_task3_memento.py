@@ -8,13 +8,13 @@ canvas.setTitle("Memento")
 
 
 # 메멘토게임을 위한 6가지 이미지 호출을 위한, 이름과 경로정의 (가로 90pixel, 세로 120pixel이어야 함)
-path = "./실습자료_6_그림/"
+path  = "./실습자료_6_그림/"
 names = ("pika.PNG", "firi.PNG", "green.PNG", "othergreen.PNG", "liza.PNG", "strange.PNG")
 
 
 # 그림카드/숫자카드 리스트 생성 (cards, num_pads)
-cards = []  # 그림카드
-num_pads = []  # 숫자카드: 0~23
+cards        = []  # 그림카드: 이미지
+num_pads     = []  # 숫자카드: 0~23
 correct_list = []  # 맞춘 카드 리스트
 
 
@@ -22,7 +22,7 @@ correct_list = []  # 맞춘 카드 리스트
 def initialize():
     for i in range(6):
         for k in range(4):
-            img = Image(path + names[i])
+            img        = Image(path + names[i])
             temp_tuple = (img, names[i])
             cards.append(temp_tuple)
 
@@ -41,8 +41,8 @@ def initialize():
 # correct_list에 있는 카드들은 cards 리스트에 있는 이미지를 프린트하고 아닌 카드들은 num_pads에 있는 숫자카드를 프린트
 def print_cards():
     canvas.clear()
-    w = 0
-    h = 0
+    w   = 0
+    h   = 0
     i_w = 70
     i_h = 90
     for i in range(len(num_pads)):

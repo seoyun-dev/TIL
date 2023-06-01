@@ -22,7 +22,8 @@ class Card():
     self.face = face
     self.suit = suit
     
-  # 객체 정보 문자열 반환하는 내장 클래스 (print 역할)
+  # card 객체를 string으로 쓰일 때 (e.x. print(dealer[-1])
+  # 객체 정보를 문자열로 반환하는 내장 클래스 (print 역할)
   def __str__(self):
     article = "a "
     if self.face in [8, "Ace"]: article = "an "
@@ -111,16 +112,19 @@ def blackjack():
   ### 그 다음은 다시 플레이어 카드를 뽑고
   ### 그 다음은 딜러가 카드를 뽑고 
   ### 마지막으로 플레이어의 2장의 카드의 합을 프린트하시오
-  player.append(deck.draw())
-  print ("You are dealt", player[-1])
-  dealer.append(deck.draw())
-  print ("Dealer is dealt hidden card")
+  for i in range(2):
+    player.append(deck.draw())
+    print ("You are dealt", player[-1])
+    
+    dealer.append(deck.draw())
+    if i == 0:
+      print ("Dealer is dealt hidden card")
+    else:
+      print ("Dealer is dealt", dealer[-1])
   
-  player.append(deck.draw())
-  print ("You are dealt", player[-1])
-  dealer.append(deck.draw())
-  print ("Dealer is dealt", dealer[-1])
   print ("Your total is", hand_value(player))
+  
+  
 
 
   while hand_value(player) < 21:

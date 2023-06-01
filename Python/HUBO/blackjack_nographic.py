@@ -115,6 +115,7 @@ def blackjack():
   print ("You are dealt", player[-1])
   dealer.append(deck.draw())
   print ("Dealer is dealt hidden card")
+  
   player.append(deck.draw())
   print ("You are dealt", player[-1])
   dealer.append(deck.draw())

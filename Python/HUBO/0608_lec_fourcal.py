@@ -42,13 +42,14 @@ class MoreFourCal(Fourcal):
 
 # 부모 클래스 Fourcal
 a = Fourcal(4, 1)
-print(a.add())
-a.setdata(5, 2)
-print(a.add())
+print(a.add())      # 4 + 1 = 5
+a.setdata(5, 2)     
+print(a.add())      # 5 + 2 = 7
 
 # 자식 클래스 MoreFourCal
 a_child = MoreFourCal(4, 2)
-print(a_child.pow())
-print(a_child.div())
+print(a_child.pow())        # '난 부모' (by super().show())
+                            # 4 ** 2 = 16
+print(a_child.div())        # 4 / 2 = 2.0
 a_child.setdata(4, 0)
-print(a_child.div())
+print(a_child.div())        # 4 / 0 = 0

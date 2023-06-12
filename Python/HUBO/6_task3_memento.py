@@ -83,8 +83,8 @@ def check(num1, num2):
         correct_list.pop()
         correct_list.pop()
         print_cards()
-        return 0
-    return 1
+        return False
+    return True
 
 
 
@@ -96,11 +96,10 @@ initialize()
 correct_list = [i for i in range(24)]
 print_cards()
 sleep(3)
+
 # 이제 게임을 시작해야 하므로 correct_list 를 모두 비우고, 숫자카드들로만 이루어진 screen을 보여준다.
 correct_list = []
 print_cards()
-
-
 
 
 # main 실행문

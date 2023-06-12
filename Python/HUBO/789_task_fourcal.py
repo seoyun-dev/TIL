@@ -24,7 +24,6 @@ class Fourcal:
         return self.first / self.second
 
 
-
 # Fourcal 클래스 상속
 class MoreFourCal(Fourcal):
 
@@ -36,8 +35,8 @@ class MoreFourCal(Fourcal):
     def div(self):
         if self.second == 0:
             return 0
-        return self.first / self.second
-    
+        return super().div()
+
 
 
 # 부모 클래스 Fourcal
@@ -45,6 +44,8 @@ a = Fourcal(4, 1)
 print(a.add())      # 4 + 1 = 5
 a.setdata(5, 2)     
 print(a.add())      # 5 + 2 = 7
+a.setdata(5, 0)
+# print(a.div())    # 에러 발생 !
 
 # 자식 클래스 MoreFourCal
 a_child = MoreFourCal(4, 2)

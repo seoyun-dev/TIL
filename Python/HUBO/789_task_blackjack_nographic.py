@@ -81,7 +81,7 @@ def hand_value(hand):
 
 
 def ask_yesno(prompt):
-  while True :
+  while True:
     user_input = input(prompt)
     if user_input == "y" :
       return True
@@ -166,12 +166,6 @@ def blackjack():
 
   print ("You have a tie!")
   return 0
-
-
-
-
-
-
 
 
 

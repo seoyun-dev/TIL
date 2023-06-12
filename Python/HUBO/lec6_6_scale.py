@@ -20,8 +20,8 @@ r.moveTo(270, 150)
 
 time.sleep(2)
 
-sq.rotate(45)
-sq.scale(1.5)
+sq.rotate(45)       # 시계방향으로 45도 회전
+sq.scale(1.5)       # 1.5배
 r.scale(0.5)
 
 time.sleep(3)

@@ -3,7 +3,7 @@ import random
 def drawing_integers(lb, ub, trials):
     num_list = []
     for _ in range(trials):
-        num_list.append(random.randint(lb, ub))
+        num_list.append(random.randint(lb, ub)) # lb <= integers <= ub
     return num_list
 
 def average_integers(num_list):

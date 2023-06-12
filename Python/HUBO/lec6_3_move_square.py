@@ -1,6 +1,10 @@
 from cs1graphics import *
 import time
 
+# ------------------>x
+#|
+#|
+#| y
 
 canvas = Canvas(400, 300)                   # 가로 400(왼->오), 세로 300(위->아래)
 canvas.setBackgroundColor("light blue")     # color or tuple(r,g,b)

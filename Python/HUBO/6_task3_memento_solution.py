@@ -13,7 +13,7 @@ canvas.setTitle("Memento")
 # 각 path와 이름을 미리 저장 (path+names를 사용해서 Image를 불러오기 위해서)
 path = "./images/"
 names = ("pika.PNG", "firi.PNG", "green.PNG",
-         "othergreen.PNG", "liza.PNG", "strange.PNG")
+        "othergreen.PNG", "liza.PNG", "strange.PNG")
 
 
 

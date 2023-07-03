@@ -3,9 +3,9 @@
 - 공유하고픈 내용은 [블로그](https://velog.io/@tiger)에도 작성합니다.
 
 ## AI/ML
-- [cs231n_study](https://github.com/seoyun-dev/TIL/tree/main/cs231n_study)
-  - [Module1_신경망구조_관련코드](https://github.com/seoyun-dev/TIL/tree/main/cs231n_study/Module1_%EC%8B%A0%EA%B2%BD%EB%A7%9D%EA%B5%AC%EC%A1%B0)
-  - [Python Numpy Tutorial](https://github.com/seoyun-dev/TIL/tree/main/cs231n_study/Python_Numpy_Tutorial)
+- [cs231n_study](https://github.com/seoyun-dev/TIL/tree/main/AI_ML/cs231n_study)
+  - [Module1_신경망구조_관련코드](https://github.com/seoyun-dev/TIL/tree/main/AI_ML/cs231n_study/Module1_%EC%8B%A0%EA%B2%BD%EB%A7%9D%EA%B5%AC%EC%A1%B0)
+  - [Python Numpy Tutorial](https://github.com/seoyun-dev/TIL/tree/main/AI_ML/cs231n_study/Python_Numpy_Tutorial)
 
 
 ## CS

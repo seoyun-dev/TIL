@@ -6,7 +6,7 @@
 - [cs231n_study](https://github.com/seoyun-dev/TIL/tree/main/AI_ML/cs231n_study)
   - [Module1_신경망구조_관련코드](https://github.com/seoyun-dev/TIL/tree/main/AI_ML/cs231n_study/Module1_%EC%8B%A0%EA%B2%BD%EB%A7%9D%EA%B5%AC%EC%A1%B0)
   - [Python Numpy Tutorial](https://github.com/seoyun-dev/TIL/tree/main/AI_ML/cs231n_study/Python_Numpy_Tutorial)
-- [Machine_Learning_23_1]()
+- [Machine_Learning_23_1](https://github.com/seoyun-dev/TIL/blob/main/AI_ML/Machine_Learning_23_1.ipynb)
 
 
 ## CS
@@ -30,11 +30,11 @@
 - [클래스](https://github.com/seoyun-dev/TIL/blob/main/Java/6.%ED%81%B4%EB%9E%98%EC%8A%A4.md)
 
 ## Python
-- [python_HUBO_23_1]()
-- [python_21]()
-  - [python1]()
-  - [python2]()
-  - [python3]()
+- [python_HUBO_23_1](https://github.com/seoyun-dev/TIL/tree/main/Python/python_HUBO_23_1)
+- [python_21](https://github.com/seoyun-dev/TIL/tree/main/Python/python_21)
+  - [python1](https://github.com/seoyun-dev/TIL/blob/main/Python/python_21/python1.ipynb)
+  - [python2](https://github.com/seoyun-dev/TIL/blob/main/Python/python_21/python2.ipynb)
+  - [python3](https://github.com/seoyun-dev/TIL/blob/main/Python/python_21/python3.ipynb)
 
 ## Spring
 - [스프링 입문 - 코드로 배우는 스프링 부트, 웹 MVC, DB 접근 기술](https://github.com/seoyun-dev/TIL/tree/main/Spring/%EC%8A%A4%ED%94%84%EB%A7%81_%EC%9E%85%EB%AC%B8)

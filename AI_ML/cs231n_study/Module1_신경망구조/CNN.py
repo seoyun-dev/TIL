@@ -5,7 +5,8 @@ import torch
 import torchvision.datasets as dsets
 import torchvision.transforms as transforms
 import torch.nn.init
-
+import random
+import matplotlib.pyplot as plt
 
 
 ###################################################### 환경설정
@@ -119,7 +120,7 @@ print('총 배치의 수 : {}'.format(total_batch))
 
 
 
-##################################### CNN(score)->Softmax(loss)->Adam(SGD,최적화)->parameter update
+##################################### 학습:CNN(score)->Softmax(loss)->Adam(SGD,최적화)->parameter update
 
 # for epoch하나 in 전체 에포크:
 for epoch in range(training_epochs):
@@ -142,7 +143,6 @@ for epoch in range(training_epochs):
         optimizer.step()                # 최적화 알고리즘(Adam)을 사용하여 모델의 매개변수를 업데이트
 
         avg_cost += cost / total_batch
-
     print('[Epoch: {:>4}] cost = {:>.9}'.format(epoch + 1, avg_cost)) #
 
 
@@ -150,7 +150,7 @@ for epoch in range(training_epochs):
 
 
 
-###################################################### CNN 이용하여 실제 분류
+###################################################### 실제 분류
 
 # 학습을 진행하지 않을 것이므로 torch.no_grad()
 with torch.no_grad():       # 컨택스트 매니저, 평가 단계에서 그라디언트 계산을 비활성화 for 속도, 메모리
@@ -164,3 +164,16 @@ with torch.no_grad():       # 컨택스트 매니저, 평가 단계에서 그라
     # 1 : 각 샘플(배치)의 클래스방향에 대해 최댓값을 구함
     accuracy = correct_prediction.float().mean()  # Boolean tensor to float(1.0/0.0)비율 tensor
     print('Accuracy:', accuracy.item())           # .item(): 텐서에서 하나의 스칼라 값을 얻어냄
+
+
+    # MNIST 테스트 데이터에서 무작위로 하나를 뽑아서 예측을 해본다
+    r = random.randint(0, len(mnist_test) - 1)
+    X_single_data = mnist_test.test_data[r].view(1, 1, 28, 28).float().to(device)
+    Y_single_data = mnist_test.test_labels[r].to(device)
+
+    print('Label: ', Y_single_data.item())
+    single_prediction = model(X_single_data)    # model() 사용
+    print('Prediction: ', torch.argmax(single_prediction, 1).item())
+
+    plt.imshow(mnist_test.test_data[r].view(28, 28), cmap='Greys', interpolation='nearest')
+    plt.show()

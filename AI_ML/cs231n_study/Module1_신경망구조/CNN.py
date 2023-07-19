@@ -7,6 +7,9 @@ import torchvision.transforms as transforms
 import torch.nn.init
 
 
+
+###################################################### 환경설정
+
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 # 랜덤 시드 고정
@@ -28,6 +31,9 @@ batch_size = 100
 
 
 
+
+###################################################### 데이터 전처리
+
 mnist_train = dsets.MNIST(root='MNIST_data/', # 다운로드 경로 지정
                             train=True, # True를 지정하면 훈련 데이터로 다운로드
                             transform=transforms.ToTensor(), # 텐서로 변환
@@ -48,6 +54,8 @@ data_loader = torch.utils.data.DataLoader(dataset=mnist_train,
 
 
 
+
+###################################################### CNN 클래스
 
 class CNN(torch.nn.Module):
 
@@ -92,16 +100,26 @@ class CNN(torch.nn.Module):
 
 
 
+###################################################### 분류기, 손실함수, 최적화 환경 설정
+
+# 분류기
 # CNN 모델 정의
 # .to() :  모델과 입력 데이터를 지정하 곳으로 옮겨 더 빠르게 학습 가능
 model = CNN().to(device)
 
+# 손실함수
 criterion = torch.nn.CrossEntropyLoss().to(device)  # 비용 함수에 소프트맥스 함수 포함되어져 있음.
-# Adam : SGD의 한 종류 / parameters(): 최적화할 모델의 매개변수들
+# 최적화 - Adam : SGD의 한 종류 / parameters(): 최적화할 모델의 매개변수들
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 total_batch = len(data_loader)
 print('총 배치의 수 : {}'.format(total_batch))
+
+
+
+
+
+##################################### CNN(score)->Softmax(loss)->Adam(SGD,최적화)->parameter update
 
 # for epoch하나 in 전체 에포크:
 for epoch in range(training_epochs):
@@ -116,18 +134,23 @@ for epoch in range(training_epochs):
 
         optimizer.zero_grad()   # 매 학습마다 계산 전에 기울기 0으로 초기화
         # forward pass
-        hypothesis = model(X)   # hypothesis는 X를 모델에 입력하여 나온 예측값
-        cost = criterion(hypothesis, Y) #  예측값과 실제 정답(Y) 사이의 손실
+        hypothesis = model(X)           # CNN으로 score(예측값) 구하기
+        cost = criterion(hypothesis, Y) # 예측값과 실제 정답(Y) 사이의 손실(by Softmax(criterion))
         # Backpropagation
-        cost.backward()         # 손실에 대한 Backpropagation 수행
+        cost.backward()                 # 손실에 대한 Backpropagation 수행
         # Parameter update
-        optimizer.step()        # 최적화 알고리즘(Adam)을 사용하여 모델의 매개변수를 업데이트
+        optimizer.step()                # 최적화 알고리즘(Adam)을 사용하여 모델의 매개변수를 업데이트
 
         avg_cost += cost / total_batch
 
     print('[Epoch: {:>4}] cost = {:>.9}'.format(epoch + 1, avg_cost)) #
 
 
+
+
+
+
+###################################################### CNN 이용하여 실제 분류
 
 # 학습을 진행하지 않을 것이므로 torch.no_grad()
 with torch.no_grad():       # 컨택스트 매니저, 평가 단계에서 그라디언트 계산을 비활성화 for 속도, 메모리

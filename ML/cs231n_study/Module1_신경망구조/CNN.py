@@ -136,9 +136,9 @@ for epoch in range(training_epochs):
         optimizer.zero_grad()   # 매 학습마다 계산 전에 기울기 0으로 초기화
         # forward pass
         hypothesis = model(X)           # CNN으로 score(예측값) 구하기
-        cost = criterion(hypothesis, Y) # 예측값과 실제 정답(Y) 사이의 손실(by Softmax(criterion))
+        cost       = criterion(hypothesis, Y) # 예측값과 실제 정답(Y) 사이의 손실(by Softmax(criterion))
         # Backpropagation
-        cost.backward()                 # 손실에 대한 Backpropagation 수행
+        cost.backward()                 # 손실에 대한 Backpropagation(자동미분) 수행
         # Parameter update
         optimizer.step()                # 최적화 알고리즘(Adam)을 사용하여 모델의 매개변수를 업데이트
 

@@ -1,11 +1,13 @@
 # Today I Learned
-- 2023년부터 공부한 내용을 작성합니다.
-- 공유하고픈 내용은 [블로그](https://velog.io/@tiger)에도 작성합니다.
+- 2023년부터 공부한 코드 위주로 작성합니다.
+- 공부한 전체 내용은 [블로그](https://seoyun.oopy.io/techblog)에서 확인할 수 있습니다.
 
-## AI/ML
+## ML
 - [cs231n_study](https://github.com/seoyun-dev/TIL/tree/main/AI_ML/cs231n_study)
   - [Module1_신경망구조_관련코드](https://github.com/seoyun-dev/TIL/tree/main/AI_ML/cs231n_study/Module1_%EC%8B%A0%EA%B2%BD%EB%A7%9D%EA%B5%AC%EC%A1%B0)
   - [Python Numpy Tutorial](https://github.com/seoyun-dev/TIL/tree/main/AI_ML/cs231n_study/Python_Numpy_Tutorial)
+- [RL](https://github.com/seoyun-dev/TIL/tree/main/ML/RL)
+  - [RL from basics](https://github.com/seoyun-dev/TIL/tree/main/ML/RL/RLfrombasics)
 - [Machine_Learning_23_1](https://github.com/seoyun-dev/TIL/blob/main/AI_ML/Machine_Learning_23_1.ipynb)
 
 

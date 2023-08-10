@@ -1,4 +1,4 @@
-# TODO 파이토치 사용화여, CNN으로 MNIST 학습하는 코드 작성
+# TODO 파이토치 사용하여, CNN으로 MNIST 학습하는 코드 작성
 # [CNN으로 MNIST 분류하기] (https://wikidocs.net/63565)
 
 import torch
@@ -45,7 +45,7 @@ mnist_test = dsets.MNIST(root='MNIST_data/', # 다운로드 경로 지정
                             transform=transforms.ToTensor(), # 텐서로 변환
                             download=True)
 
-# shuffle: 데이터를 미니배치로 나누기 전에 데이터를 섞을지 여부를 결정합. True로 설정하면 매 에포크(epoch)마다 데이터가 랜덤하게 섞임
+# shuffle: 데이터를 미니배치로 나누기 전에 데이터를 섞을지 여부를 결정. True로 설정하면 매 에포크(epoch)마다 데이터가 랜덤하게 섞임
 #drop_last: 데이터를 미니배치로 나눌 때 마지막에 배치 크기보다 작은 크기의 데이터가 남으면 해당 데이터를 버릴지 여부를 결정. True로 설정하면 마지막 배치가 batch_size보다 작을 경우 해당 배치를 버림.
 data_loader = torch.utils.data.DataLoader(dataset=mnist_train,
                                             batch_size=batch_size,
@@ -63,38 +63,42 @@ class CNN(torch.nn.Module):
     def __init__(self):
         super(CNN, self).__init__()
         # 첫번째층
-        # 텐서크기 : (배치크기 * 높이 * 너비 * 채널)
-        # ImgIn shape=(?, 28, 28, 1)     --- 임의의 텐서 크기
-        #    Conv     -> (?, 28, 28, 32) --- 합성곱 층 통과 후 텐서 크기
-        #    Pool     -> (?, 14, 14, 32) --- 맥스풀링 통과 후 텐서의 크기
+        # 텐서크기 : (배치크기 * 채널 * 높이 * 너비)
+        # ImgIn shape=(?, 1, 28, 28)     --- 임의의 텐서 크기
+        #    Conv     -> (?, 32, 28, 28) --- 합성곱 층 통과 후 텐서 크기
+        #    Pool     -> (?, 32, 14, 14) --- 맥스풀링 통과 후 텐서의 크기
         self.layer1 = torch.nn.Sequential(
             # in_channel=1, out_channel=32 : 1채널을 입력받아 32채널을 뽑아내라. 
-            # 3*3 kernel size를 가짐 / stride : 커널을 이동시키는 간격
+            # 3*3 kernel size + stride 1 + padding 1 -> shape 유지
             torch.nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1),
             torch.nn.ReLU(),
             torch.nn.MaxPool2d(kernel_size=2, stride=2))    # 풀링: 차원 줄이고 특징 강조(추출)
-
+        
         # 두번째층
-        # ImgIn shape=(?, 14, 14, 32)
-        #    Conv      ->(?, 14, 14, 64)
-        #    Pool      ->(?, 7, 7, 64)
+        # ImgIn shape=(?, 32, 14, 14)
+        #    Conv      ->(?, 64, 14, 14)
+        #    Pool      ->(?, 64, 7, 7)
         self.layer2 = torch.nn.Sequential(
             torch.nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),
             torch.nn.ReLU(),
             torch.nn.MaxPool2d(kernel_size=2, stride=2))
-
-        # 전결합층 7x7x64 inputs -> 10 outputs
+        
+        # 전결합층 (?, 64, 7, 7) inputs -> (?, 10) outputs
         self.fc = torch.nn.Linear(7 * 7 * 64, 10, bias=True)
 
         # 전결합층 한정으로 가중치 초기화
         torch.nn.init.xavier_uniform_(self.fc.weight)
 
     def forward(self, x):
+        print("Conv1 input shape:", x.shape)
         out = self.layer1(x)
+        print("Conv1 output shape:", out.shape)
         out = self.layer2(out)
+        print("Conv2 output shape:", out.shape)
         #전결합층을 위해서 Flatten
         out = out.view(out.size(0), -1)   # 첫 번째 차원인 배치차원 제외하고 나머지 펼치기
         out = self.fc(out)
+        print("FC output shape:", out.shape)
         return out
 
 
@@ -110,7 +114,7 @@ model = CNN().to(device)
 
 # 손실함수
 criterion = torch.nn.CrossEntropyLoss().to(device)  # 비용 함수에 소프트맥스 함수 포함되어져 있음.
-# 최적화 - Adam : SGD의 한 종류 / parameters(): 최적화할 모델의 매개변수들
+# 최적화 - Adam / parameters(): 최적화할 모델의 매개변수들
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 total_batch = len(data_loader)
@@ -161,7 +165,7 @@ with torch.no_grad():       # 컨택스트 매니저, 평가 단계에서 그라
     prediction = model(X_test)                    # prediction : 각 샘플에 대해 클래스별 확률 값
     correct_prediction = torch.argmax(prediction, 1) == Y_test
     # argmax() :  1차원 텐서에서 특정 차원에 대해 최댓값을 갖는 인덱스를 반환
-    # 1 : 각 샘플(배치)의 클래스방향에 대해 최댓값을 구함
+    # 1 : 각 행에서 가장 큰 값의 인덱스 추출 (각 샘플에서 가장 큰 점수를 받은 클래스 추출)
     accuracy = correct_prediction.float().mean()  # Boolean tensor to float(1.0/0.0)비율 tensor
     print('Accuracy:', accuracy.item())           # .item(): 텐서에서 하나의 스칼라 값을 얻어냄
 

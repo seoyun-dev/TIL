@@ -45,8 +45,9 @@ mnist_test = dsets.MNIST(root='MNIST_data/', # 다운로드 경로 지정
                             transform=transforms.ToTensor(), # 텐서로 변환
                             download=True)
 
-# shuffle: 데이터를 미니배치로 나누기 전에 데이터를 섞을지 여부를 결정. True로 설정하면 매 에포크(epoch)마다 데이터가 랜덤하게 섞임
-#drop_last: 데이터를 미니배치로 나눌 때 마지막에 배치 크기보다 작은 크기의 데이터가 남으면 해당 데이터를 버릴지 여부를 결정. True로 설정하면 마지막 배치가 batch_size보다 작을 경우 해당 배치를 버림.
+# shuffle: 데이터를 미니배치로 나누기 전에 데이터를 섞을지 여부를 결정. True -> 매 에포크(epoch)마다 데이터가 랜덤하게 섞임
+#drop_last: 데이터를 미니배치로 나눌 때 마지막에 배치 크기보다 작은 크기의 데이터가 남으면 해당 데이터를 버릴지 여부를 결정. 
+# True로 설정하면 마지막 배치가 batch_size보다 작을 경우 해당 배치를 버림.
 data_loader = torch.utils.data.DataLoader(dataset=mnist_train,
                                             batch_size=batch_size,
                                             shuffle=True,
@@ -68,8 +69,8 @@ class CNN(torch.nn.Module):
         #    Conv     -> (?, 32, 28, 28) --- 합성곱 층 통과 후 텐서 크기
         #    Pool     -> (?, 32, 14, 14) --- 맥스풀링 통과 후 텐서의 크기
         self.layer1 = torch.nn.Sequential(
-            # in_channel=1, out_channel=32 : 1채널을 입력받아 32채널을 뽑아내라. 
-            # 3*3 kernel size + stride 1 + padding 1 -> shape 유지
+            # in_channel=1, out_channel=32 : 1채널을 입력받아 32채널을 뽑아내기(필터 32개)
+            # output = ((28-3+2)/1) + 1 = 28 
             torch.nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1),
             torch.nn.ReLU(),
             torch.nn.MaxPool2d(kernel_size=2, stride=2))    # 풀링: 차원 줄이고 특징 강조(추출)
@@ -79,26 +80,24 @@ class CNN(torch.nn.Module):
         #    Conv      ->(?, 64, 14, 14)
         #    Pool      ->(?, 64, 7, 7)
         self.layer2 = torch.nn.Sequential(
+            # 필터 64개
             torch.nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),
             torch.nn.ReLU(),
             torch.nn.MaxPool2d(kernel_size=2, stride=2))
         
-        # 전결합층 (?, 64, 7, 7) inputs -> (?, 10) outputs
+        # 전결합층 (?, 64, 7, 7) inputs -> (?, 10) outputs 
+        # (MNIST 클래스가 0~9 10개이므로 10개의 score 위해서)
         self.fc = torch.nn.Linear(7 * 7 * 64, 10, bias=True)
 
         # 전결합층 한정으로 가중치 초기화
         torch.nn.init.xavier_uniform_(self.fc.weight)
 
     def forward(self, x):
-        print("Conv1 input shape:", x.shape)
         out = self.layer1(x)
-        print("Conv1 output shape:", out.shape)
         out = self.layer2(out)
-        print("Conv2 output shape:", out.shape)
         #전결합층을 위해서 Flatten
         out = out.view(out.size(0), -1)   # 첫 번째 차원인 배치차원 제외하고 나머지 펼치기
         out = self.fc(out)
-        print("FC output shape:", out.shape)
         return out
 
 
@@ -115,7 +114,9 @@ model = CNN().to(device)
 # 손실함수
 criterion = torch.nn.CrossEntropyLoss().to(device)  # 비용 함수에 소프트맥스 함수 포함되어져 있음.
 # 최적화 - Adam / parameters(): 최적화할 모델의 매개변수들
-optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+# 첫 번째 베타 : 그래디언트의 이동 평균을 계산하는 데 사용, 두 번째 베타 : 그래디언트의 제곱의 이동 평균을 계산하는 데 사용
+# weight_decay : L2 정규화(가중치 감쇠)를 위한 가중치
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, betas=(0.9,0.999))
 
 total_batch = len(data_loader)
 print('총 배치의 수 : {}'.format(total_batch))

@@ -108,7 +108,6 @@ def main():
             (x,y), reward, done = env.step(action)
             history.append((x,y,reward))
         env.reset()
-        print(history)
         ######### 에피소드 끝난 후 학습하는 부분 : 쌓인 경험을 통해 테이블을 업데이트
         cum_reward = 0   # 리턴
         for transition in history[::-1]:

@@ -1,6 +1,8 @@
 import random
 import numpy as np
 
+
+############################### 환경 : 에이전트의 액션을 받아 상태변이를 일으키고, 보상을 줌
 class GridWorld():
     def __init__(self):
         self.x=0
@@ -40,7 +42,7 @@ class GridWorld():
             pass
         else:
             self.y += 1
-      
+    
     def move_up(self):
         if self.x==0:
             pass
@@ -62,12 +64,15 @@ class GridWorld():
             return True
         else:
             return False
-      
+    
     def reset(self):
         self.x = 0
         self.y = 0
         return (self.x, self.y)
 
+
+
+############################### 에이전트 : 정책을 따라 움직임
 class QAgent():
     def __init__(self):
         self.q_table = np.zeros((5, 7, 4)) # 마찬가지로 Q 테이블을 0으로 초기화
@@ -85,6 +90,8 @@ class QAgent():
         return action
 
     def update_table(self, transition):
+        # 에피소드마다 업데이트 x, 트렌지션마다 업데이트 o
+        # -> input이 history가 아닌 transition
         s, a, r, s_prime = transition
         x,y = s
         next_x, next_y = s_prime
@@ -106,8 +113,11 @@ class QAgent():
                 action = np.argmax(col)
                 data[row_idx, col_idx] = action
         print(data)
-      
+    
 
+
+
+############################### 학습을 하는 메인 함수
 def main():
     env = GridWorld()
     agent = QAgent()
@@ -119,6 +129,7 @@ def main():
         while not done:
             a = agent.select_action(s)
             s_prime, r, done = env.step(a)
+            # transition마다 업데이트
             agent.update_table((s,a,r,s_prime))
             s = s_prime
         agent.anneal_eps()

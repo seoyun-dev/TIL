@@ -75,8 +75,8 @@ class GridWorld():
 ############################### 에이전트 : 정책을 따라 움직임
 class QAgent():
     def __init__(self):
-        # np.zeros((깊이, 행, 열)) 
-        self.q_table = np.zeros((5, 7, 4)) # q벨류를 저장하는 변수. 모두 0으로 초기화. 
+        # np.zeros((깊이, 행, 열)) - 깊이 0,1,2,3은 액션 0,1,2,3에 해당
+        self.q_table = np.zeros((5, 7, 4)) # q벨류를 저장하는 변수. 모두 0으로 초기화
         self.eps = 0.9 
         self.alpha = 0.01
         
@@ -85,14 +85,14 @@ class QAgent():
         x, y = s
         coin = random.random()              # 0~1 사이의 난수 생성
         if coin < self.eps:
-            action = random.randint(0,3)    # 0~3 사이의 랜덤 정수 생성 (랜덤 액션 선택)
+            action = random.randint(0,3)    # 랜덤 액션(0~3) 선택
         else:
             action_val = self.q_table[x,y,:]
-            action = np.argmax(action_val)  # 최댓값의 인덱스 반환
+            action = np.argmax(action_val)  # 액션가치가 최댓인 액션의 인덱스 반환
         return action
 
     def update_table(self, history):
-        # 한 에피소드에 해당하는 history를 입력으로 받아 q 테이블의 값을 업데이트 한다
+        # 한 에피소드에 해당하는 history를 입력으로 받아 q 테이블의 값을 업데이트
         cum_reward = 0
         for transition in history[::-1]:
             s, a, r, s_prime = transition
@@ -100,7 +100,6 @@ class QAgent():
             # 몬테 카를로 방식을 이용하여 업데이트.
             self.q_table[x,y,a] = self.q_table[x,y,a] + self.alpha * (cum_reward - self.q_table[x,y,a])
             cum_reward = cum_reward + r 
-            ### TODO ch5_MC와 달리 여기선 이동 된 상태의 업데이트가 아니라 이동 전의 상태를 업데이트한다. 그런데 왜 cum_reward += r를 하는 과정이 테이블 업데이트보다 뒤에 가있는 것일까?
 
     def anneal_eps(self):
         # epsilon 값을 조금씩 줄이는 함수
@@ -136,7 +135,7 @@ def main():
             s_prime, r, done = env.step(a)
             history.append((s, a, r, s_prime))
             s = s_prime
-        agent.update_table(history) # 히스토리를 이용하여 에이전트를 업데이트
+        agent.update_table(history) # 에피소드가 끝난 후 - 히스토리 이용하여 에이전트 업데이트
         agent.anneal_eps()          # epsilon 값 조금씩 줄이기
 
     agent.show_table() # 학습이 끝난 결과를 출력

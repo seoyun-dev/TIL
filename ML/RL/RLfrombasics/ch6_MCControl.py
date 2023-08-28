@@ -75,7 +75,7 @@ class GridWorld():
 ############################### 에이전트 : 정책을 따라 움직임
 class QAgent():
     def __init__(self):
-        # np.zeros((깊이, 행, 열)) - 깊이 0,1,2,3은 액션 0,1,2,3에 해당
+        # np.zeros((행, 열, 깊이)) - 깊이 0,1,2,3은 액션 0,1,2,3에 해당
         self.q_table = np.zeros((5, 7, 4)) # q벨류를 저장하는 변수. 모두 0으로 초기화
         self.eps = 0.9 
         self.alpha = 0.01

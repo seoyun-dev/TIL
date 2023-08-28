@@ -90,12 +90,9 @@ class QAgent():
         return action
 
     def update_table(self, transition):
-        # 에피소드마다 업데이트 x, 트렌지션마다 업데이트 o
-        # -> input이 history가 아닌 transition
         s, a, r, s_prime = transition
         x,y = s
         next_x, next_y = s_prime
-        a_prime = self.select_action(s_prime) # S'에서 선택할 액션 (실제로 취한 액션이 아님)
         # Q러닝 업데이트 식을 이용 
         self.q_table[x,y,a] = self.q_table[x,y,a] + 0.1 * (r + np.amax(self.q_table[next_x,next_y,:]) - self.q_table[x,y,a])
 

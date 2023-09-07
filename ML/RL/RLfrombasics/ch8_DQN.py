@@ -78,15 +78,16 @@ class Qnet(nn.Module):      # nn.Module : 뉴럴넷을 만들 때 뼈대가 되�
 ############################### 학습 진행 함수
 def train(q, q_target, memory, optimizer):
     for i in range(10): # 10개의 미니배치(320개 데이터)를 뽑아 총 10번 파라미터 업데이트
-        s,a,r,s_prime,done_mask = memory.sample(batch_size)  # 리플버퍼에서 32개 데이터 뽑아 하나의 배치 생성
+        s,a,r,s_prime,done_mask = memory.sample(batch_size)  # 리플버퍼에서 상관성 x 32개 데이터 뽑아 하나의 배치 생성
+        # s와 s_prime:(32*4), a와 done_mask:(32*1)
 
-        q_out       = q(s)            # s의 q(s,a1),                  q(s,a2)
-        q_a         = q_out.gather(1,a) # q_out에서 a에 해당하는 인덱스 반환. 즉, 실제 행동한 액션의 인덱스 반환
-        max_q_prime = q_target(s_prime).max(1)[0].unsqueeze(1)
+        q_out       = q(s)            # 32*4 input -> 32*2 output (액션밸류)
+        q_a         = q_out.gather(1,a) # q_out에서 a에 해당하는 인덱스 반환. 즉, 실제 행동한 액션의 인덱스 반환 (32*1)
+        max_q_prime = q_target(s_prime).max(1)[0].unsqueeze(1)  # for TD타깃. 액션밸류가 가장 큰 액션밸류 값 반환 (32*1)
         # max(1): 각 행에서 최댓값과 그 인덱스 반환. max(1)[0]: 각 행의 최댓값 텐서 값만 반환
-        # unsqueeze(1) : 1번째 차원(열 방향)을 확장하여 텐서 구조 변환
-        target = r + gamma * max_q_prime * done_mask    # TD 타깃값
-        loss   = F.smooth_l1_loss(q_a, target)          # 손실값 계산
+        # unsqueeze(1): 1번째 차원(열 방향)을 확장하여 텐서 구조 변환
+        target = r + gamma * max_q_prime * done_mask    # TD 타깃값 (32*1)
+        loss   = F.smooth_l1_loss(q_a, target)          # 손실값 계산 smooth_l1_loss(추정치, 타깃값)
         
         optimizer.zero_grad()   # 파라미터 초기화
         loss.backward()         # 역전파(그라디언트 계산)
@@ -101,30 +102,30 @@ def main():
     q        = Qnet()  # 행동정책
     q_target = Qnet()  # 타깃정책
     q_target.load_state_dict(q.state_dict())  # 초기에 서로의 파라미터 동일하도록
-    memory = ReplayBuffer()
+    memory   = ReplayBuffer()
 
     print_interval = 20
     score          = 0.0
     optimizer      = optim.Adam(q.parameters(), lr=learning_rate) # q 네트워크만 업데이트 (타깃정책은 업데이트 X)
 
     for n_epi in range(10000):  # 10000개 에피소드 진행
-        epsilon   = max(0.01, 0.08 - 0.01*(n_epi/200)) #Linear annealing from 8% to 1%
+        epsilon   = max(0.01, 0.08 - 0.01*(n_epi/200)) # eps-greedy 행동정책 위해
         s, _      = env.reset() # 환경 초기화 후 초기 상태 반환 (_는 무시하기 위해 사용)
-        done      = False
+        done      = False       # 종료상태가 되면 True
 
         while not done: # 종료 상태 될 때까지 진행. 즉, 한 에피소드 진행
             a = q.sample_action(torch.from_numpy(s).float(), epsilon) # s의 실제 행동 a 반환     
             s_prime, r, done, truncated, info = env.step(a)
             done_mask = 0.0 if done else 1.0
-            memory.put((s,a,r/100.0,s_prime, done_mask))    # 보상이 커서 스케일 조절하기 위해 100으로 나눔
+            memory.put((s,a,r/100.0,s_prime, done_mask))             # 보상이 커서 스케일 조절하기 위해 100으로 나눔
             s = s_prime
 
-            score += r      # 보상의 합
+            score += r      # 한 에피소드의 보상의 합
             if done:
                 break
         
         # 에피소드가 끝나고 학습 진행 
-        # 리플레이버퍼에 데이터 충분히 쌓지 않고 학습 진행시 학습이 초기 데이터에 치우칠 수 있음
+        # 리플레이버퍼에 데이터 충분히 쌓지 않고 학습 진행(파라미터 업데이트)시 학습이 초기 데이터에 치우칠 수 있음
         # -> 2000개 이상 데이터가 쌓였을 때부터 학습 진행
         if memory.size()>2000:  
             train(q, q_target, memory, optimizer)

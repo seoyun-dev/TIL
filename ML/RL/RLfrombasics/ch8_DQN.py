@@ -2,7 +2,6 @@ import gym
 # 리플레이 버퍼를 구현할 때 사용
 import collections
 import random
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -25,7 +24,7 @@ class ReplayBuffer():
     def put(self, transition):      # 데이터를 버퍼에 넣어주는 함수
         self.buffer.append(transition)
     
-    def sample(self, n):            # 버에서 랜덤하게 32개의 데이터를 뽑아 미니배치를 구성해주는 함수
+    def sample(self, n):            # 바에서 랜덤하게 32개의 데이터를 뽑아 미니배치를 구성해주는 함수
         mini_batch = random.sample(self.buffer, n)   # self.buffer에서 중복없이 n개 요소 선택
         s_lst, a_lst, r_lst, s_prime_lst, done_mask_lst = [], [], [], [], []    
         # done_mask : 종료(0), 종료x(1)- q(s,a)에 곱하여 밸류표현(종료 상태의 밸류 = 0)

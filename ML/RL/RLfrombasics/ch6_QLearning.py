@@ -79,7 +79,7 @@ class QAgent():
         self.eps = 0.9
 
     def select_action(self, s):
-        # eps-greedy로 액션을 선택해준다
+        # 행동 정책: eps-greedy로 액션을 선택해준다
         x, y = s
         coin = random.random()
         if coin < self.eps:
@@ -94,6 +94,7 @@ class QAgent():
         x,y = s
         next_x, next_y = s_prime
         # Q러닝 업데이트 식을 이용 
+        # 타깃 정책(for 밸류 업데이트->정책 업데이트): greedy (max)
         self.q_table[x,y,a] = self.q_table[x,y,a] + 0.1 * (r + np.amax(self.q_table[next_x,next_y,:]) - self.q_table[x,y,a])
 
     def anneal_eps(self):

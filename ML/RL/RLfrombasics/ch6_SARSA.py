@@ -79,7 +79,7 @@ class QAgent():
         self.eps = 0.9
 
     def select_action(self, s):
-        # eps-greedy로 액션을 선택해준다
+        # 행동 정책: eps-greedy로 액션을 선택해준다
         x, y = s
         coin = random.random()
         if coin < self.eps:
@@ -93,6 +93,7 @@ class QAgent():
         s, a, r, s_prime = transition
         x,y = s
         next_x, next_y = s_prime
+        # 타깃 정책(for 밸류 업데이트->정책 업데이트): eps-greedy
         a_prime = self.select_action(s_prime) # S'에서 선택할 액션 (실제로 취한 액션이 아님)
         # SARSA 업데이트 식을 이용
         self.q_table[x,y,a] = self.q_table[x,y,a] + 0.1 * (r + self.q_table[next_x,next_y,a_prime] - self.q_table[x,y,a])

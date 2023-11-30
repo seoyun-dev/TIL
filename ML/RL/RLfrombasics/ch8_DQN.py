@@ -81,9 +81,9 @@ def train(q, q_target, memory, optimizer):
         # s와 s_prime:(32*4), a와 done_mask:(32*1)
 
         q_out       = q(s)            # 32*4 input -> 32*2 output (액션밸류)
-        q_a         = q_out.gather(1,a) # q_out에서 a에 해당하는 인덱스 반환. 즉, 실제 행동한 액션의 인덱스 반환 (32*1)
+        q_a         = q_out.gather(1,a) #  q_a에는 선택된 액션 a에 해당하는 Q값 반환 (32*1)
         max_q_prime = q_target(s_prime).max(1)[0].unsqueeze(1)  # for TD타깃. 액션밸류가 가장 큰 액션밸류 값 반환 (32*1)
-        # max(1): 각 행에서 최댓값과 그 인덱스 반환. max(1)[0]: 각 행의 최댓값 텐서 값만 반환
+        # max(1): 첫번째 축(행)을 기준으로 최댓값과 그 인덱스 반환. max(1)[0]: 각 행의 최댓값 텐서 값만 반환
         # unsqueeze(1): 1번째 차원(열 방향)을 확장하여 텐서 구조 변환
         target = r + gamma * max_q_prime * done_mask    # TD 타깃값 (32*1)
         loss   = F.smooth_l1_loss(q_a, target)          # 손실값 계산 smooth_l1_loss(추정치, 타깃값)
@@ -97,11 +97,11 @@ def train(q, q_target, memory, optimizer):
 ############################### 메인 함수
 def main():
     env      = gym.make('CartPole-v1')
+    memory   = ReplayBuffer()
     # 행동정책과 타깃정책 분리
     q        = Qnet()  # 행동정책
     q_target = Qnet()  # 타깃정책
     q_target.load_state_dict(q.state_dict())  # 초기에 서로의 파라미터 동일하도록
-    memory   = ReplayBuffer()
 
     print_interval = 20
     score          = 0.0
@@ -123,8 +123,8 @@ def main():
             if done:
                 break
         
-        # 에피소드가 끝나고 학습 진행 
-        # 리플레이버퍼에 데이터 충분히 쌓지 않고 학습 진행(파라미터 업데이트)시 학습이 초기 데이터에 치우칠 수 있음
+        # 한 에피소드가 끝날때마다 학습(파라미터 업데이트) 진행  
+        # 리플레이 버퍼에 데이터 충분히 쌓지 않고 학습 진행(파라미터 업데이트)시 학습이 초기 데이터에 치우칠 수 있음
         # -> 2000개 이상 데이터가 쌓였을 때부터 학습 진행
         if memory.size()>2000:  
             train(q, q_target, memory, optimizer)

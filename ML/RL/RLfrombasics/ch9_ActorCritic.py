@@ -65,10 +65,11 @@ class ActorCritic(nn.Module):
         
 
         pi = self.pi(s, softmax_dim=1)
-        pi_a = pi.gather(1,a)       # q_out에서 a에 해당하는 인덱스 반환. 즉, 실제 행동한 액션의 인덱스 반환 (32*1)
-        # 정책 네트워크의 손실 함수(maximize'-') + 밸류 네트워크 손실 함수(minimize'+') - 한꺼번에 업데이트
-        # detach - 함수취급을 위해 (정책과 현재 밸류만 업데이트 위해)
+        pi_a = pi.gather(1,a)       # q_out에서 a에 해당하는 값 반환 (32*1)
+        # 정책 네트워크의 목적 함수(maximize'-') + 밸류 네트워크 손실 함수(minimize'+') - 한꺼번에 업데이트
+        # 정책 네트워크 손실 + 밸류 네트워크 손실
         loss = -torch.log(pi_a) * delta.detach() + F.smooth_l1_loss(self.v(s), td_target.detach())
+        # detach - 함수취급을 위해 (정책과 현재 밸류만 업데이트 위해)
 
         self.optimizer.zero_grad()
         loss.mean().backward()

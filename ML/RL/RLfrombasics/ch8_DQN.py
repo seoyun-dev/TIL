@@ -107,7 +107,7 @@ def main():
     score          = 0.0
     optimizer      = optim.Adam(q.parameters(), lr=learning_rate) # q 네트워크만 업데이트 (타깃정책은 업데이트 X)
 
-    for n_epi in range(10000):  # 10000개 에피소드 진행
+    for n_epi in range(1000):  # 1000개 에피소드 진행
         epsilon   = max(0.01, 0.08 - 0.01*(n_epi/200)) # eps-greedy 행동정책 위해
         s, _      = env.reset() # 환경 초기화 후 초기 상태 반환 (_는 무시하기 위해 사용)
         done      = False       # 종료상태가 되면 True
@@ -115,7 +115,7 @@ def main():
         while not done: # 종료 상태 될 때까지 진행. 즉, 한 에피소드 진행
             a = q.sample_action(torch.from_numpy(s).float(), epsilon) # s의 실제 행동 a 반환     
             s_prime, r, done, truncated, info = env.step(a)
-            done_mask = 0.0 if done else 1.0
+            done_mask = 0.0 if done else 1.0    # done_mask: 에피소드 끝나지 않았을 때(False) train 업데이트 지속 위해 done과 반대로.
             memory.put((s,a,r/100.0,s_prime, done_mask))             # 보상이 커서 스케일 조절하기 위해 100으로 나눔
             s = s_prime
 
@@ -129,12 +129,11 @@ def main():
         if memory.size()>2000:  
             train(q, q_target, memory, optimizer)
 
-
         if n_epi%print_interval==0 and n_epi!=0:        # 에피소드가 20개 끝날 때마다
             q_target.load_state_dict(q.state_dict())    # q_target 네트워크에 q 네트워크 파라미터 복사
             print("n_episode :{}, score : {:.1f}, n_buffer : {}, eps : {:.1f}%".format(
                                                             n_epi, score/print_interval, memory.size(), epsilon*100))
-            score = 0.0
+            score = 0.0                                 # score 초기화
     env.close()
 
 if __name__ == '__main__':

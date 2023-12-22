@@ -3,7 +3,7 @@ from DDPGAgent import Agent
 import numpy as np
 from collections import deque
 
-env = gym.make("CartPole-v0")
+env = gym.make("Pendulum-v1")
 
 train_mode = True
 load_model = False
@@ -37,9 +37,10 @@ if __name__ == '__main__':
         while not done:
             env.render()
             step += 1
+            
+            action = agent.get_action(state)[0]
 
-            action = agent.get_action([state])[0]
-            next_state, reward, done, _ = env.step(np.argmax(action))
+            next_state, reward, done, _, _ = env.step(np.argmax(action))
 
             if train_mode:
                 agent.append_sample(state, action, reward, next_state, done)

@@ -3,6 +3,7 @@ import numpy as np
 import math
 
 def convertToTensorInput(input, input_size, batsize=1):
+    print(len(input))
     input = np.reshape(input, [batsize, input_size])
     return torch.FloatTensor(input)
 

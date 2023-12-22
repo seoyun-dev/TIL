@@ -19,7 +19,7 @@ class Critic(nn.Module):
     def forward(self, state, action):
         x = self.layer1(state)
 
-        x = torch.cat([x, action], dim=-1)
+        x = torch.cat([x, action], dim=-1) # x와 action 이어 붙이기
 
         x = self.layer2(x)
         x = self.layer3(x)

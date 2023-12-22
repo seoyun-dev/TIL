@@ -8,11 +8,11 @@ env = gym.make("CartPole-v0")
 train_mode = True
 load_model = False
 
-num_epochs = 5000
+num_epochs      = 5000
 discount_factor = 0.99
 steps_per_epoch = 100
-step_count = 0
-step = 0
+step_count      = 0
+step            = 0
 
 start_train_episode = 50
 
@@ -21,7 +21,7 @@ print_interval = 1
 loss = None
 
 if __name__ == '__main__':
-    state_size = env.observation_space.shape[0]
+    state_size  = env.observation_space.shape[0]
     action_size = env.action_space.n
 
     agent = Agent(state_size, action_size, train_mode, load_model)
@@ -31,8 +31,8 @@ if __name__ == '__main__':
     for episode in range(num_epochs):
 
         state = env.reset()
-        done = False
-        step = 0
+        done  = False
+        step  = 0
 
         while not done:
             env.render()

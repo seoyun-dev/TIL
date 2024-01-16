@@ -16,12 +16,15 @@ class DDPGAgent:
         self.state_dim        = env.observation_space.shape[0]  # 3
         self.action_dim       = env.action_space.shape[0]       # 1
         self.action_bound     = env.action_space.high[0]        # 2.0 / -1~1 -> -2~2로 액션범위 변화 위해
+        
         self.actor            = Actor(self.state_dim, self.action_dim, self.action_bound)
         self.actor_target     = Actor(self.state_dim, self.action_dim, self.action_bound)
         self.critic           = Critic(self.state_dim, self.action_dim)
         self.critic_target    = Critic(self.state_dim, self.action_dim)
+        
         self.actor_optimizer  = optim.Adam(self.actor.parameters(), lr=1e-4)
         self.critic_optimizer = optim.Adam(self.critic.parameters(), lr=5e-4)
+        
         self.memory           = []          # 리플레이 버퍼
         self.batch_size       = 64          # 배치 사이즈  
         self.gamma            = 0.99        # 감쇠인자    
@@ -73,11 +76,11 @@ class DDPGAgent:
 
         
         # 각 리스트를 NumPy 배열로 변환
-        states = torch.tensor(np.vstack(states_list), dtype=torch.float32)
-        actions = torch.tensor(actions_list, dtype=torch.float32)
-        rewards = torch.tensor(rewards_list, dtype=torch.float32)
+        states     = torch.tensor(np.vstack(states_list), dtype=torch.float32)
+        actions    = torch.tensor(actions_list, dtype=torch.float32)
+        rewards    = torch.tensor(rewards_list, dtype=torch.float32)
         new_states = torch.tensor(np.vstack(new_states_list), dtype=torch.float32)
-        dones = torch.tensor(dones_list, dtype=torch.float32)
+        dones      = torch.tensor(dones_list, dtype=torch.float32)
 
         # 원 코드
         # batch      = np.array(samples)

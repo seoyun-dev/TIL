@@ -6,9 +6,9 @@ import torch.nn as nn
 class Actor(nn.Module):
     def __init__(self, state_dim, action_dim, action_bound):
         super(Actor, self).__init__()
-        self.fc1 = nn.Linear(state_dim, 64)
-        self.fc2 = nn.Linear(64, 32)
-        self.fc3 = nn.Linear(32, action_dim)
+        self.fc1 = nn.Linear(state_dim, 128)
+        self.fc2 = nn.Linear(128, 128)
+        self.fc3 = nn.Linear(128, action_dim)
         self.action_bound = action_bound
 
     def forward(self, x):

@@ -6,6 +6,7 @@ import random
 
 from Actor import Actor
 from Critic import Critic
+from Noise import OU_noise
 
 
 ####### DDPG Agent 클래스
@@ -17,10 +18,11 @@ class DDPGAgent:
         self.action_dim       = env.action_space.shape[0]       # 1
         self.action_bound     = env.action_space.high[0]        # 2.0 / -1~1 -> -2~2로 액션범위 변화 위해
         
-        self.actor            = Actor(self.state_dim, self.action_dim, self.action_bound)
-        self.actor_target     = Actor(self.state_dim, self.action_dim, self.action_bound)
-        self.critic           = Critic(self.state_dim, self.action_dim)
-        self.critic_target    = Critic(self.state_dim, self.action_dim)
+        self.OU            = OU_noise(self.action_dim)
+        self.actor         = Actor(self.state_dim, self.action_dim, self.action_bound)
+        self.actor_target  = Actor(self.state_dim, self.action_dim, self.action_bound)
+        self.critic        = Critic(self.state_dim, self.action_dim)
+        self.critic_target = Critic(self.state_dim, self.action_dim)
         
         self.actor_optimizer  = optim.Adam(self.actor.parameters(), lr=1e-4)
         self.critic_optimizer = optim.Adam(self.critic.parameters(), lr=5e-4)
@@ -28,7 +30,7 @@ class DDPGAgent:
         self.memory           = []          # 리플레이 버퍼
         self.batch_size       = 64          # 배치 사이즈  
         self.gamma            = 0.99        # 감쇠인자    
-        self.tau              = 1e-3        # soft target network update 파라미터
+        self.tau              = 0.002       # soft target network update 파라미터
 
         self.update_target_models(tau=1)    # 타겟 파라미터들 초기화 (actor, critic과 같도록)
 
@@ -49,24 +51,24 @@ class DDPGAgent:
         self.memory.append([state, action, reward, new_state, done])
 
 
-    ##### 학습 진행 함수 
+    ##### 학습(업데이트) 진행 함수 
     def train(self):
         if len(self.memory) < self.batch_size:
             return
 
-        samples    = random.sample(self.memory, self.batch_size)    # 리플레이버퍼에서 무작위 샘플 추출
-        states_list = []
-        actions_list = []
-        rewards_list = []
+        samples         = random.sample(self.memory, self.batch_size)    # 리플레이버퍼에서 무작위 샘플 추출
+        states_list     = []
+        actions_list    = []
+        rewards_list    = []
         new_states_list = []
-        dones_list = []
+        dones_list      = []
 
         for sample in samples:
-            state = sample[0]
-            action = sample[1][0]
-            reward = sample[2]
+            state     = sample[0]
+            action    = sample[1][0]
+            reward    = sample[2]
             new_state = sample[3]
-            done = sample[4]
+            done      = sample[4]
 
             states_list.append(state)
             actions_list.append(action)
@@ -90,7 +92,7 @@ class DDPGAgent:
         # new_states = torch.tensor(np.vstack(batch[:, 3]), dtype=torch.float32)
         # dones      = torch.tensor(list(batch[:, 4]), dtype=torch.float32)
 
-        # 타겟 네트워크
+        # 타겟 액션, 타겟 Q값 구하기
         target_actions  = self.actor_target(new_states) # 액터(정책함수)-예측된 액션 값
         future_q_values = self.critic_target(new_states, target_actions)    # 크리틱(액션가치함수)
         target_q_values = rewards + (1 - dones) * self.gamma * future_q_values.detach()     # 타겟 Q값 계산
@@ -102,6 +104,7 @@ class DDPGAgent:
         self.critic_optimizer.zero_grad()
         critic_loss.backward()
         self.critic_optimizer.step()
+        
         actor_loss = -self.critic(states, self.actor(states)).mean() # 정책의 목적함수는 정책함수의 가치 > maximize해야 > - 붙임
         self.actor_optimizer.zero_grad()
         actor_loss.backward()
@@ -120,7 +123,7 @@ class DDPGAgent:
             s = 0
             # TODO 왜지.. done이 True가 나오지 않으므로 안끝남; 
             # while not done:
-            for trans in range(64):
+            for trans in range(200):
                 self.env.render()
 
                 # state 전처리
@@ -128,28 +131,33 @@ class DDPGAgent:
                     # state를 튜플 내의 배열로부터 가져옴
                     state_array = state[0]
                     # 배열 내의 요소들을 가져와서 처리
-                    value_1 = state_array[0]
-                    value_2 = state_array[1]
-                    value_3 = state_array[2]
+                    value_1 = state_array[0]    # state
+                    value_2 = state_array[1]    # action    
+                    value_3 = state_array[2]    # reward
                     # 가져온 값들을 원하는 형태로 처리 (예: numpy 배열로 변환)
-                    state = np.array([value_1, value_2, value_3], dtype=np.float32)
+                    state   = np.array([value_1, value_2, value_3], dtype=np.float32)
                 
                 state_tensor = torch.tensor(state, dtype=torch.float32).unsqueeze(0)
 
-                # action 선택 (by actor) TODO 분포인가?
+                # action 선택 (by actor, noise)
                 action = self.actor(state_tensor).squeeze(0).detach().numpy()
-                new_state, reward, done, a, b = self.env.step(action)
-                
+                action = action + self.OU.sample()
+                # action = np.clip(action + np.random.normal(0, 0.1, size=action.shape), -self.action_bound, self.action_bound)
+                new_state, reward,done, a, b = self.env.step(action)
+
                 # 한 transition 데이터 저장
                 self.remember(state, action, reward, new_state, done)
                 episode_reward += reward
-                state = new_state
+                state           = new_state
 
                 if len(self.memory) > self.batch_size:
                     self.train()
 
-            # 64 trans마다 출력
-            print(f"64-trans: {ep + 1}, Reward: {episode_reward}")
+                if done:
+                    break
+
+            # 1000 trans마다 출력
+            print(f"200 trans: {ep + 1}, Reward: {episode_reward}")
 
             if episode_reward > -300:  # Pendulum-v1의 평가 기준
                 print(f"Solved at episode {ep + 1}!")

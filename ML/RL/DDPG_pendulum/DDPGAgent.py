@@ -99,7 +99,7 @@ class DDPGAgent:
 
         # actor, critic 파라미터 손실 계산 및 역전파
         # print((self.critic(states,actions)).shape, target_q_values.shape)
-        critic_loss = torch.mean((self.critic(states, actions) - target_q_values)**2)
+        critic_loss = torch.mean((target_q_values-self.critic(states, actions))**2)
         # critic_loss = nn.MSELoss()(self.critic(states, actions), target_q_values.unsqueeze(1))
         self.critic_optimizer.zero_grad()
         critic_loss.backward()
@@ -164,3 +164,17 @@ class DDPGAgent:
                 break
 
         self.env.close()
+
+
+    
+    def test(self, test_episodes=100):
+        for episode in range(test_episodes):
+            state = self.env.reset()
+            episode_reward = 0
+            for t in range(10):
+                action = self.actor(state)
+                state, reward, done, _ = self.env.step(action)
+                episode_reward += reward
+                if done:
+                    break
+            print(f"Episode: {episode + 1}, Reward: {episode_reward}")

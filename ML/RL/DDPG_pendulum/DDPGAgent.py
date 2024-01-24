@@ -30,7 +30,7 @@ class DDPGAgent:
         self.memory           = []          # 리플레이 버퍼
         self.batch_size       = 64          # 배치 사이즈  
         self.gamma            = 0.99        # 감쇠인자    
-        self.tau              = 0.002       # soft target network update 파라미터
+        self.tau              = 0.00001       # soft target network update 파라미터
 
         self.update_target_models(tau=1)    # 타겟 파라미터들 초기화 (actor, critic과 같도록)
 
